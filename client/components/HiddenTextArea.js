@@ -20,15 +20,13 @@ export class HiddenTextArea extends React.Component {
     this.textarea.current.focus();
   }
 
-  clear () {
-    this.textarea.current.value = '';
-  }
-
   render () {
     return (
       <StyledHiddenTextArea
         ref={this.textarea}
-        onKeyUp={e => this.props.onKeyUp(e)}
+        value={this.props.value}
+        onChange={e => this.props.onChange(e)}
+        onKeyPress={e => this.props.onKeyPress(e)}
       />
     );
   }
