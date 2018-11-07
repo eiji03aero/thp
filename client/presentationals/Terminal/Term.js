@@ -6,17 +6,19 @@ const TermBox = styled.div`
   height: 100%;
   background-color: black;
   color: white;
+  overflow-y: scroll;
 `;
 
-export const Term = ({
+export const Term = React.forwardRef(({
   children,
   onClick,
-}) => {
+}, ref) => {
   return (
     <TermBox
+      ref={ref}
       onClick={onClick}
     >
       { children }
     </TermBox>
   );
-}
+});

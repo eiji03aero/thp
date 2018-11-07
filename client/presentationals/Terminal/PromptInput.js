@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import cn from 'classnames';
 import _ from "lodash";
 
-import { colors } from "../utils/colors.js";
+import { colors } from "../../utils/colors.js";
 
 const blink = keyframes`
   0% {
@@ -52,10 +52,14 @@ export const PromptInput = ({
   return (
     <React.Fragment>
       { _.map(text.split(''), (t,idx) => (
-        <PromptSpan className={cn({ 'on-cursor': cursorPosition === idx })}>
+        <PromptSpan
+          className={cn({
+            'on-cursor': cursorPosition === idx,
+            'blank': t === ' ',
+          })}
+        >
           { t }
         </PromptSpan>
-
       ))}
 
       { cursorPosition === text.length && (

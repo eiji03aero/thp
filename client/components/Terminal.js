@@ -1,14 +1,20 @@
 import React from 'react';
 import _ from "lodash";
 
-import { Term } from "../presentationals/Term.js";
 import { HiddenTextArea } from "./HiddenTextArea.js";
-import { PromptInput } from "../presentationals/PromptInput.js";
+import { Term, PromptInput, TextLine } from "../presentationals/Terminal";
 
 export class Terminal extends React.Component {
   constructor (props) {
     super(props);
     this.textarea = React.createRef();
+    this.terminal = React.createRef();
+  }
+
+  componentDidUpdate (prevProps, prevState, snapshot) {
+    if (this.props.messages.length !== prevProps.messages.length) {
+      this.terminal.current.scrollTop = this.terminal.current.scrollHeight;
+    }
   }
 
   handleKeyPress = (e) => {
@@ -33,6 +39,7 @@ export class Terminal extends React.Component {
 
     return (
       <Term
+        ref={this.terminal}
         onClick={this.handleClickTerm}
       >
         { _.map(messages, (message, idx) => {
@@ -41,18 +48,18 @@ export class Terminal extends React.Component {
             : message.text;
 
           return (
-            <div key={idx}>
+            <TextLine key={idx}>
               { displayMessage }
-            </div>
+            </TextLine>
           );
         })}
 
-        <div>
+        <TextLine>
           <span>
             { `$ ${prompt} ` }
           </span>
           <PromptInput text={currentMessage} cursorPosition={cursorPosition}/>
-        </div>
+        </TextLine>
 
         <HiddenTextArea
           ref={this.textarea}
