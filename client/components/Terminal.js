@@ -3,6 +3,7 @@ import _ from "lodash";
 
 import { Term } from "../presentationals/Term.js";
 import { HiddenTextArea } from "./HiddenTextArea.js";
+import { PromptInput } from "../presentationals/PromptInput.js";
 
 export class Terminal extends React.Component {
   constructor (props) {
@@ -16,13 +17,17 @@ export class Terminal extends React.Component {
     }
   }
 
+  handleKeyUp = (e, { position }) => {
+    this.props.onUpdatePromptCursorPosition(position);
+  }
+
   handleClickTerm = (e) => {
     this.textarea.current.focus();
   }
 
   render () {
     const {
-      messages, currentMessage, prompt,
+      currentMessage, cursorPosition, messages, prompt,
       onTypeIntoPrompt
     } = this.props;
 
@@ -43,7 +48,10 @@ export class Terminal extends React.Component {
         })}
 
         <div>
-          { `$ ${prompt} ${currentMessage}` }
+          <span>
+            { `$ ${prompt} ` }
+          </span>
+          <PromptInput text={currentMessage} cursorPosition={cursorPosition}/>
         </div>
 
         <HiddenTextArea
@@ -51,6 +59,7 @@ export class Terminal extends React.Component {
           value={currentMessage}
           onChange={e => onTypeIntoPrompt(e.target.value)}
           onKeyPress={this.handleKeyPress}
+          onKeyUp={this.handleKeyUp}
         />
       </Term>
     );

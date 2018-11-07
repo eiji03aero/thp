@@ -11,6 +11,10 @@ const StyledHiddenTextArea = styled.textarea`
 `;
 
 export class HiddenTextArea extends React.Component {
+  static defaultProps = {
+    onKeyUP: f => f,
+  };
+
   constructor (props) {
     super(props);
     this.textarea = React.createRef();
@@ -20,6 +24,11 @@ export class HiddenTextArea extends React.Component {
     this.textarea.current.focus();
   }
 
+  handleKeyUp = e => {
+    const { selectionStart } = this.textarea.current;
+    this.props.onKeyUp(e, { position: selectionStart });
+  }
+
   render () {
     return (
       <StyledHiddenTextArea
@@ -27,6 +36,7 @@ export class HiddenTextArea extends React.Component {
         value={this.props.value}
         onChange={e => this.props.onChange(e)}
         onKeyPress={e => this.props.onKeyPress(e)}
+        onKeyUp={this.handleKeyUp}
       />
     );
   }
