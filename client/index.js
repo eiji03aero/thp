@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 
-import { TerminalContainer } from "./containers/TerminalContainer.js";
+import { App } from "./App.js";
+
 import { createStore } from "./store";
 
 const store = createStore();
 
-const App = props => (
+ReactDOM.render(
   <Provider store={store}>
-    <TerminalContainer/>
-  </Provider>
+    <App/>
+  </Provider>,
+  document.querySelector('#app-root')
 );
-
-ReactDOM.render(<App/>, document.querySelector('#app-root'));
