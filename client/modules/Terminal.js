@@ -2,6 +2,7 @@
 const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
 const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
 const SUBMIT_PROMPT = 'SUBMIT_PROMPT';
+const ADD_MESSAGE = 'ADD_MESSAGE';
 
 /* -------------------- Actions -------------------- */
 export const typeIntoPrompt = currentMessage => ({
@@ -21,26 +22,20 @@ export const submitPrompt = () => ({
   type: SUBMIT_PROMPT,
 });
 
+export const addMessage = ({ type, text }) => ({
+  type: ADD_MESSAGE,
+  payload: {
+    type,
+    text,
+  },
+});
 
 /* -------------------- Initial state -------------------- */
 const initialState = {
   currentMessage: '',
   cursorPosition: 0,
   prompt: 'username:~',
-  messages: [
-    {
-      type: 'system',
-      text: 'Log into ssh client ...',
-    },
-    {
-      type: 'system',
-      text: 'wait ...',
-    },
-    {
-      type: 'system',
-      text: 'Log in successed!',
-    },
-  ],
+  messages: [],
 };
 
 /* -------------------- Reducers -------------------- */
@@ -55,6 +50,10 @@ export const terminalReducer = (state = initialState, action) => {
 
     case SUBMIT_PROMPT:
       return { ...state, currentMessage: '', messages: [ ...state.messages, { type: 'user', text: state.currentMessage }]};
+
+    case ADD_MESSAGE:
+      const { type, text } = action.payload;
+      return { ...state, messages: [ ...state.messages, { type, text }]};
 
     default:
       return state;

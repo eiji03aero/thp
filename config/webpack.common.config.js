@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const pathResolver = pathName => path.resolve(__dirname, '../', pathName);
 
 module.exports = {
+  devtool: 'source-map',
   entry: [
     pathResolver('client/index.js'),
   ],

@@ -8,8 +8,6 @@ import * as actions from './modules/System.js';
 import { createStore } from "./store";
 
 const store = createStore();
-store.dispatch(actions.onBeginBootApp());
-setTimeout(() => store.dispatch(actions.onCompleteBootApp()), 5000);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,3 +15,5 @@ ReactDOM.render(
   </Provider>,
   document.querySelector('#app-root')
 );
+
+store.dispatch(actions.bootApp());
