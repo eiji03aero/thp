@@ -1,10 +1,9 @@
 import { connect } from "react-redux";
 
-import { Terminal } from "../components/Terminal.js";
+import { TerminalPage } from "../pages/TerminalPage.js";
 import * as actions from "../modules/Terminal.js";
 
-const mapStateToProps = ({ terminal, system }) => ({
-  isBooting: system.isBooting,
+const mapStateToProps = ({ terminal }) => ({
   currentMessage: terminal.currentMessage,
   cursorPosition: terminal.cursorPosition,
   messages: terminal.messages,
@@ -17,7 +16,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmitPrompt: () => dispatch(actions.submitPrompt()),
 });
 
-export const TerminalContainer = connect(
+export const TerminalPageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Terminal);
+)(TerminalPage);

@@ -1,11 +1,10 @@
 import React from 'react';
 import _ from "lodash";
 
-import { HiddenTextArea } from "./HiddenTextArea.js";
-import { Term, PromptInput, TextLine } from "../presentationals/Terminal";
-import { LoadingPanel } from "./Terminal/LoadingPanel.js";
+import { HiddenTextArea } from "../components/HiddenTextArea.js";
+import { Term, PromptInput, TextLine } from "../components/presentationals/Terminal";
 
-export class Terminal extends React.Component {
+export class TerminalPage extends React.Component {
   constructor (props) {
     super(props);
     this.textarea = React.createRef();
@@ -34,7 +33,6 @@ export class Terminal extends React.Component {
 
   render () {
     const {
-      isBooting,
       currentMessage, cursorPosition, messages, prompt,
       onTypeIntoPrompt
     } = this.props;
@@ -70,8 +68,6 @@ export class Terminal extends React.Component {
           onKeyPress={this.handleKeyPress}
           onKeyUp={this.handleKeyUp}
         />
-
-        <LoadingPanel show={isBooting}/>
       </Term>
     );
   }

@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
 
-import { TerminalContainer } from "./containers/TerminalContainer.js";
+import { TerminalPageContainer } from "./containers/TerminalPageContainer.js";
+import { BootAppPageContainer } from "./containers/BootAppPageContainer.js";
 
 import { GlobalStyle } from './GlobalStyle.js';
 
@@ -13,7 +14,8 @@ const AppDiv = styled.div`
 
 export const App = props => (
   <AppDiv>
-    <TerminalContainer/>
+    <TerminalPageContainer/>
+    <BootAppPageContainer/>
     <GlobalStyle/>
   </AppDiv>
 );

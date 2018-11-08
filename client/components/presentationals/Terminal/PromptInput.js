@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import cn from 'classnames';
 import _ from "lodash";
 
-import { colors } from "../../utils/colors.js";
+import { colors } from "../../../utils/colors.js";
 
 const blink = keyframes`
   0% {

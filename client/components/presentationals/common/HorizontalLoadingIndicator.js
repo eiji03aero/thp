@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { colors } from "../utils/colors.js";
+import { colors } from "../../../utils/colors.js";
 
 const doubleBullet = keyframes`
   0% {
@@ -12,7 +12,7 @@ const doubleBullet = keyframes`
     right: 0;
     width: 60%;
   }
-  59% {
+  55% {
     right: 0;
     width: 0;
   }
