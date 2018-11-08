@@ -3,6 +3,7 @@ import _ from "lodash";
 
 import { HiddenTextArea } from "./HiddenTextArea.js";
 import { Term, PromptInput, TextLine } from "../presentationals/Terminal";
+import { LoadingPanel } from "./Terminal/LoadingPanel.js";
 
 export class Terminal extends React.Component {
   constructor (props) {
@@ -33,6 +34,7 @@ export class Terminal extends React.Component {
 
   render () {
     const {
+      isBooting,
       currentMessage, cursorPosition, messages, prompt,
       onTypeIntoPrompt
     } = this.props;
@@ -68,6 +70,8 @@ export class Terminal extends React.Component {
           onKeyPress={this.handleKeyPress}
           onKeyUp={this.handleKeyUp}
         />
+
+        <LoadingPanel show={isBooting}/>
       </Term>
     );
   }

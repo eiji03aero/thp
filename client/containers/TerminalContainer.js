@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { Terminal } from "../components/Terminal.js";
 import * as actions from "../modules/Terminal.js";
 
-const mapStateToProps = ({ terminal }) => ({
+const mapStateToProps = ({ terminal, system }) => ({
+  isBooting: system.isBooting,
   currentMessage: terminal.currentMessage,
   cursorPosition: terminal.cursorPosition,
   messages: terminal.messages,
