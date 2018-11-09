@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { TerminalPage } from "../pages/TerminalPage.js";
 import * as actions from "../modules/Terminal.js";
 
-const mapStateToProps = ({ terminal }) => ({
+const mapStateToProps = ({ terminal, fileSystem }) => ({
   currentMessage: terminal.currentMessage,
   cursorPosition: terminal.cursorPosition,
   messages: terminal.messages,
   prompt: terminal.prompt,
+  currentDirectory: fileSystem.currentDirectory,
 });
 
 const mapDispatchToProps = (dispatch) => ({

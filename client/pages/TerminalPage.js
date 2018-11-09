@@ -11,6 +11,10 @@ export class TerminalPage extends React.Component {
     this.terminal = React.createRef();
   }
 
+  componentDidMount () {
+    this.textarea.current.focus();
+  }
+
   componentDidUpdate (prevProps, prevState, snapshot) {
     if (this.props.messages.length !== prevProps.messages.length) {
       this.terminal.current.scrollTop = this.terminal.current.scrollHeight;
@@ -34,6 +38,7 @@ export class TerminalPage extends React.Component {
   render () {
     const {
       currentMessage, cursorPosition, messages, prompt,
+      currentDirectory,
       onTypeIntoPrompt
     } = this.props;
 
@@ -56,9 +61,12 @@ export class TerminalPage extends React.Component {
 
         <TextLine>
           <span>
-            { `$ ${prompt} ` }
+            { `$ ${prompt}${currentDirectory.name} ` }
           </span>
-          <PromptInput text={currentMessage} cursorPosition={cursorPosition}/>
+          <PromptInput
+            text={currentMessage}
+            cursorPosition={cursorPosition}
+          />
         </TextLine>
 
         <HiddenTextArea

@@ -13,25 +13,6 @@ export const completeBootApp = () => ({
   type: COMPLETE_BOOT_APP
 });
 
-export const bootApp = () => dispatch => {
-  dispatch(beginBootApp());
-  setTimeout(() => {
-    dispatch(completeBootApp());
-    dispatch(terminalActions.addMessage({
-      type: 'system',
-      text: 'Log into ssh client',
-    }));
-    dispatch(terminalActions.addMessage({
-      type: 'system',
-      text: 'please wait ...',
-    }));
-    dispatch(terminalActions.addMessage({
-      type: 'system',
-      text: 'Log in succeeded!',
-    }));
-  }, 4000);
-}
-
 /* -------------------- Initial state -------------------- */
 const initialState = {
   isBooting: false,

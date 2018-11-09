@@ -1,3 +1,5 @@
+import uuid from 'uuid/v4';
+
 /* -------------------- Constants -------------------- */
 const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
 const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
@@ -25,6 +27,7 @@ export const submitPrompt = () => ({
 export const addMessage = ({ type, text }) => ({
   type: ADD_MESSAGE,
   payload: {
+    id: uuid(),
     type,
     text,
   },
@@ -34,7 +37,7 @@ export const addMessage = ({ type, text }) => ({
 const initialState = {
   currentMessage: '',
   cursorPosition: 0,
-  prompt: 'username:~',
+  prompt: 'username:',
   messages: [],
 };
 
@@ -49,11 +52,11 @@ export const terminalReducer = (state = initialState, action) => {
       return { ...state, cursorPosition: action.payload.cursorPosition };
 
     case SUBMIT_PROMPT:
-      return { ...state, currentMessage: '', messages: [ ...state.messages, { type: 'user', text: state.currentMessage }]};
+      return { ...state, currentMessage: '', messages: [ ...state.messages, { id: uuid(), type: 'user', text: state.currentMessage }]};
 
     case ADD_MESSAGE:
       const { type, text } = action.payload;
-      return { ...state, messages: [ ...state.messages, { type, text }]};
+      return { ...state, messages: [ ...state.messages, { id: uuid(), type, text }]};
 
     default:
       return state;
