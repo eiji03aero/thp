@@ -37,8 +37,9 @@ export class TerminalPage extends React.Component {
 
   render () {
     const {
-      currentMessage, cursorPosition, messages, prompt,
+      currentMessage, cursorPosition, messages,
       currentDirectory,
+      userName,
       onTypeIntoPrompt
     } = this.props;
 
@@ -48,20 +49,16 @@ export class TerminalPage extends React.Component {
         onClick={this.handleClickTerm}
       >
         { _.map(messages, (message, idx) => {
-          const displayMessage = message.type === 'user'
-            ? `$ ${prompt} ${message.text}`
-            : message.text;
-
           return (
             <TextLine key={idx}>
-              { displayMessage }
+              { message.text }
             </TextLine>
           );
         })}
 
         <TextLine>
           <span>
-            { `$ ${prompt}${currentDirectory.name} ` }
+            { `${userName}:${currentDirectory.name}$ ` }
           </span>
           <PromptInput
             text={currentMessage}

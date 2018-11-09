@@ -34,8 +34,8 @@ const LoadingBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   color: ${colors.white};
 `;
 

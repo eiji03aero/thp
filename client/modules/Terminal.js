@@ -3,8 +3,8 @@ import uuid from 'uuid/v4';
 /* -------------------- Constants -------------------- */
 const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
 const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
-const SUBMIT_PROMPT = 'SUBMIT_PROMPT';
 const ADD_MESSAGE = 'ADD_MESSAGE';
+const CLEAR_CURRENT_MESSAGE = 'CLEAR_CURRENT_MESSAGE';
 
 /* -------------------- Actions -------------------- */
 export const typeIntoPrompt = currentMessage => ({
@@ -13,15 +13,12 @@ export const typeIntoPrompt = currentMessage => ({
     currentMessage,
   }
 });
+
 export const updatePromptCursorPosition = position => ({
   type: UPDATE_PROMPT_CURSOR_POSITION,
   payload: {
     cursorPosition: position,
   }
-});
-
-export const submitPrompt = () => ({
-  type: SUBMIT_PROMPT,
 });
 
 export const addMessage = ({ type, text }) => ({
@@ -33,11 +30,14 @@ export const addMessage = ({ type, text }) => ({
   },
 });
 
+export const clearCurrentMessage = () => ({
+  type: CLEAR_CURRENT_MESSAGE,
+});
+
 /* -------------------- Initial state -------------------- */
 const initialState = {
   currentMessage: '',
   cursorPosition: 0,
-  prompt: 'username:',
   messages: [],
 };
 
@@ -51,14 +51,17 @@ export const terminalReducer = (state = initialState, action) => {
     case UPDATE_PROMPT_CURSOR_POSITION:
       return { ...state, cursorPosition: action.payload.cursorPosition };
 
-    case SUBMIT_PROMPT:
-      return { ...state, currentMessage: '', messages: [ ...state.messages, { id: uuid(), type: 'user', text: state.currentMessage }]};
-
     case ADD_MESSAGE:
       const { type, text } = action.payload;
-      return { ...state, messages: [ ...state.messages, { id: uuid(), type, text }]};
+      return { ...state, messages: [ ...state.messages, makeMessage({ type, text })]};
+
+    case CLEAR_CURRENT_MESSAGE:
+      return { ...state, currentMessage: '' };
 
     default:
       return state;
   }
 };
+
+/* -------------------- Private functions -------------------- */
+const makeMessage = ({ type, text }) => ({ id: uuid(), type, text });

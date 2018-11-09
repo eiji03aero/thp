@@ -36,7 +36,7 @@ const doubleBullet = keyframes`
 
 const Indicator = styled.div`
   position: relative;
-  width: 200px;
+  width: 100%;
   height: .4rem;
   background-color: ${colors.black};
 
