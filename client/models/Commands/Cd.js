@@ -1,4 +1,5 @@
 import { Command } from "../Command.js";
+import { FileSystem } from "../FileSystem.js";
 
 // interface {
 //   type: constructor;
@@ -25,8 +26,11 @@ export class Cd extends Command {
       };
     }
 
+    const targetDirectory = FileSystem.resolveNodeFromPath(this.arguments[1], this.currentDirectory);
+
     return {
       status: 'success',
+      moveTo: targetDirectory,
       messages: [ ],
     };
   }

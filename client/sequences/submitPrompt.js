@@ -1,5 +1,6 @@
 import _ from "lodash";
 import * as terminalActions from '../modules/Terminal.js';
+import * as fileSystemActions from '../modules/FileSystem.js';
 import { executeCommand } from "../models/Commands";
 
 export const submitPrompt = () => (dispatch, getState) => {
@@ -26,6 +27,10 @@ export const submitPrompt = () => (dispatch, getState) => {
       text: message,
     }));
   });
+
+  if (result.moveTo) {
+    dispatch(fileSystemActions.setCurrentDirectory(result.moveTo));
+  }
 
   dispatch(terminalActions.clearCurrentMessage());
 };

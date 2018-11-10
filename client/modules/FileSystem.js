@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Directory } from "../models/Directory.js";
 
 /* -------------------- Constants -------------------- */
@@ -39,7 +40,8 @@ export const fileSystemReducer = (state = initialState, action) => {
       return { ...state, currentDirectory: action.payload.currentDirectory };
 
     case SET_ROOT_CHILDREN:
-      return { ...state, root: { ...state.root, children: action.payload.children } };
+      _.each(action.payload.children, child => state.root.addChild(child));
+      return { ...state };
 
     default:
       return state;

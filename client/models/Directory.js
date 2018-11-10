@@ -26,4 +26,13 @@ export class Directory extends FileSystemNode {
   removeChild (child) {
     this.children = this.children.filter(c => child !== c);
   }
+
+  contains (childName) {
+    const childrenNames = this.children.map(child => child.name);
+    return _.includes(childrenNames, childName);
+  }
+
+  find (childName) {
+    return _.find(this.children, { name: childName });
+  }
 }
