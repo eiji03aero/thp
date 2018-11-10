@@ -53,6 +53,7 @@ export const PromptInput = ({
     <React.Fragment>
       { _.map(text.split(''), (t,idx) => (
         <PromptSpan
+          key={idx}
           className={cn({
             'on-cursor': cursorPosition === idx,
             'blank': t === ' ',

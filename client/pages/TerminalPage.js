@@ -23,6 +23,7 @@ export class TerminalPage extends React.Component {
 
   handleKeyPress = (e) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       this.props.onSubmitPrompt();
     }
   }
