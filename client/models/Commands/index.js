@@ -9,6 +9,11 @@ export const executeCommand = ({
   message,
   currentDirectory,
 }) => {
+  const commandParams = {
+    message: message,
+    currentDirectory: currentDirectory,
+  };
+
   switch (true) {
     case message === '':
       return {
@@ -17,22 +22,22 @@ export const executeCommand = ({
       };
 
     case Cd.test(message):
-      return new Cd({ message: message }).execute();
+      return new Cd(commandParams).execute();
 
     case Ls.test(message):
-      return new Ls({ message: message }).execute();
+      return new Ls(commandParams).execute();
 
     case Rm.test(message):
-      return new Rm({ message: message }).execute();
+      return new Rm(commandParams).execute();
 
     case Open.test(message):
-      return new Open({ message: message }).execute();
+      return new Open(commandParams).execute();
 
     case Pwd.test(message):
-      return new Pwd({ message: message }).execute();
+      return new Pwd(commandParams).execute();
 
     case Touch.test(message):
-      return new Touch({ message: message }).execute();
+      return new Touch(commandParams).execute();
 
     default:
       return {

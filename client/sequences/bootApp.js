@@ -5,52 +5,7 @@ import * as terminalActions from '../modules/Terminal.js';
 import { Directory } from "../models/Directory.js";
 import { TextFile } from "../models/Files";
 
-const varDirectory = new Directory({
-  name: 'var',
-  children: [
-    new TextFile({
-      name: 'error.log',
-      content: 'your error is here',
-    }),
-  ],
-});
-
-const homeDirectory = new Directory({
-  name: 'home',
-  children: [
-    new Directory({
-      name: 'applications',
-      children: [
-        new TextFile({
-          name: 'game.txt',
-          content: 'game is here',
-        }),
-        new TextFile({
-          name: 'editor.txt',
-          content: 'editor will be here',
-        }),
-      ],
-    }),
-    new Directory({
-      name: 'notes',
-      children: [
-        new TextFile({
-          name: 'graduate_paper.txt',
-          content: 'i will graduate from this college',
-        }),
-        new TextFile({
-          name: 'memo.txt',
-          content: 'you gonna need it',
-        }),
-      ]
-    })
-  ],
-})
-
-const initialFileNodes = [
-  varDirectory,
-  homeDirectory,
-];
+import { initialFileNodes, homeDirectory } from "../utils/initialFileNodes.js";
 
 export const bootApp = () => dispatch => {
   dispatch(systemActions.beginBootApp());

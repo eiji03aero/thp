@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Command } from "../Command.js";
 
 // interface {
@@ -15,11 +16,17 @@ export class Ls extends Command {
   }
 
   execute () {
+    const { children } = this.currentDirectory;
+    const listMessage = _.reduce(
+      children,
+      ( accum, current ) => accum + ' ' + current.name,
+      ''
+    );
+
     return {
       status: 'success',
       messages: [
-        'domo kore nakanaka',
-        'eena eiji osakabe',
+        listMessage,
       ]
     };
   }

@@ -1,12 +1,17 @@
 // interface {
 //   type: constructor;
 //   arguments: Array<String>;
+//   currentDirectory: Directory;
 // }
 
 export class Command {
-  constructor (params) {
+  constructor ({
+    message,
+    currentDirectory,
+  }) {
     this.type = this.constructor.name;
-    this.arguments = this._parseArgument(params.message);
+    this.arguments = this._parseArgument(message);
+    this.currentDirectory = currentDirectory;
   }
 
   static test () {
