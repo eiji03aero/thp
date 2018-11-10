@@ -128,7 +128,20 @@ export const homeDirectory = new Directory({
   ],
 })
 
+/* -------------------- etc directory -------------------- */
+
+const etcDirectory = new Directory({
+  name: 'etc',
+  children: [
+    new TextFile({
+      name: 'null',
+      content: 'null file is here',
+    }),
+  ],
+});
+
 export const initialFileNodes = [
   varDirectory,
   homeDirectory,
+  etcDirectory,
 ];
