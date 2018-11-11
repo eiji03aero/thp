@@ -31,12 +31,30 @@ export class Cd extends Command {
       };
     }
 
-    const targetDirectory = FileSystem.resolveNodeFromPath(this.arguments[1], this.currentDirectory);
+    const { error, node } = FileSystem.resolveNodeFromPath(this.arguments[1], this.currentDirectory);
 
-    return {
-      status: 'success',
-      moveTo: targetDirectory,
-      messages: [ ],
-    };
+    if (error) {
+      return {
+        status: 'error',
+        messages: [
+          { texts: [ { text: error.message, color: 'red' }]},
+        ],
+      };
+    }
+
+    if (node.isDirectory()) {
+      return {
+        status: 'success',
+        moveTo: node,
+        messages: [],
+      }
+    } else {
+      return {
+        status: 'error',
+        messages: [
+          { texts: [ { text: `Not a directory: ${node.name}`, color: 'red' }]},
+        ],
+      };
+    }
   }
 }
