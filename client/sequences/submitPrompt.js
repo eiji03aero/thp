@@ -6,7 +6,7 @@ import { executeCommand } from "../models/Commands";
 export const submitPrompt = () => (dispatch, getState) => {
   const {
     terminal: { prompt, currentMessage },
-    user: { name },
+    user: { name: userName },
     fileSystem: { currentDirectory },
   } = getState();
 
@@ -30,6 +30,7 @@ export const submitPrompt = () => (dispatch, getState) => {
 
   if (result.moveTo) {
     dispatch(fileSystemActions.setCurrentDirectory(result.moveTo));
+    dispatch(terminalActions.updatePromptStatus({ userName, directoryName: result.moveTo.name }));
   }
 
   dispatch(terminalActions.clearCurrentMessage());
