@@ -1,12 +1,26 @@
 import uuid from 'uuid/v4';
+import { Message } from "../models/Message.js";
+import { colors } from "../utils/colors.js";
 
 /* -------------------- Constants -------------------- */
+const UPDATE_PROMPT_STATUS = 'UPDATE_PROMPT_STATUS';
 const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
 const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
 const ADD_MESSAGE = 'ADD_MESSAGE';
 const CLEAR_CURRENT_MESSAGE = 'CLEAR_CURRENT_MESSAGE';
 
 /* -------------------- Actions -------------------- */
+export const updatePromptStatus = ({ userName, directoryName }) => ({
+  type: UPDATE_PROMPT_STATUS,
+  payload: {
+    prompt: [
+      { text: userName },
+      { text: ':' },
+      { text: directoryName, color: colors.blue },
+      { text: '$ ' },
+    ],
+  },
+})
 export const typeIntoPrompt = currentMessage => ({
   type: TYPE_INTO_PROMPT,
   payload: {
@@ -21,12 +35,13 @@ export const updatePromptCursorPosition = position => ({
   }
 });
 
-export const addMessage = ({ type, text }) => ({
+export const addMessage = ({ type, texts }) => ({
   type: ADD_MESSAGE,
   payload: {
-    id: uuid(),
-    type,
-    text,
+    message: new Message({
+      type: type,
+      texts: texts,
+    }),
   },
 });
 
@@ -36,6 +51,7 @@ export const clearCurrentMessage = () => ({
 
 /* -------------------- Initial state -------------------- */
 const initialState = {
+  prompt: [],
   currentMessage: '',
   cursorPosition: 0,
   messages: [],
@@ -45,6 +61,9 @@ const initialState = {
 
 export const terminalReducer = (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_PROMPT_STATUS:
+      return { ...state, prompt: action.payload.prompt };
+
     case TYPE_INTO_PROMPT:
       return { ...state, currentMessage: action.payload.currentMessage };
 
@@ -52,8 +71,7 @@ export const terminalReducer = (state = initialState, action) => {
       return { ...state, cursorPosition: action.payload.cursorPosition };
 
     case ADD_MESSAGE:
-      const { type, text } = action.payload;
-      return { ...state, messages: [ ...state.messages, makeMessage({ type, text })]};
+      return { ...state, messages: [ ...state.messages, action.payload.message ]};
 
     case CLEAR_CURRENT_MESSAGE:
       return { ...state, currentMessage: '' };

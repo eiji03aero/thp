@@ -18,7 +18,12 @@ export class Pwd extends Command {
     return {
       status: 'success',
       messages: [
-        '/home/domo'
+        {
+          type: 'system',
+          texts: [
+            { text: '/home/hoge/korekore' }
+          ]
+        }
       ]
     };
   }

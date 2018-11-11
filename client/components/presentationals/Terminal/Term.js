@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from "styled-components";
+import { colors } from "../../../utils/colors.js";
 
-const TermBox = styled.div`
+const TermDiv = styled.div`
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: ${colors.deepGreen};
   color: white;
   overflow-y: scroll;
 `;
@@ -14,11 +15,11 @@ export const Term = React.forwardRef(({
   onClick,
 }, ref) => {
   return (
-    <TermBox
+    <TermDiv
       ref={ref}
       onClick={onClick}
     >
       { children }
-    </TermBox>
+    </TermDiv>
   );
 });

@@ -21,7 +21,12 @@ export class Cd extends Command {
       return {
         status: 'success',
         messages: [
-          '-mash: cd: no destination given',
+          {
+            type: 'system',
+            texts: [
+              { text: '-mash: cd: no destination given' }
+            ]
+          }
         ]
       };
     }

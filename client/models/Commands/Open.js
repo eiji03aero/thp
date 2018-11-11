@@ -18,7 +18,12 @@ export class Open extends Command {
     return {
       status: 'success',
       messages: [
-        'Opened the file!'
+        {
+          type: 'system',
+          texts: [
+            { text: 'opend the file!' }
+          ]
+        }
       ]
     };
   }

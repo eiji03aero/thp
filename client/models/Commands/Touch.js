@@ -18,7 +18,12 @@ export class Touch extends Command {
     return {
       status: 'success',
       messages: [
-        'created file',
+        {
+          type: 'system',
+          texts: [
+            { text: 'created the file' }
+          ]
+        }
       ]
     };
   }

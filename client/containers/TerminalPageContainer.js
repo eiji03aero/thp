@@ -5,6 +5,7 @@ import { submitPrompt } from "../sequences/submitPrompt.js";
 import * as actions from "../modules/Terminal.js";
 
 const mapStateToProps = ({ terminal, fileSystem, user }) => ({
+  prompt: terminal.prompt,
   currentMessage: terminal.currentMessage,
   cursorPosition: terminal.cursorPosition,
   messages: terminal.messages,

@@ -26,7 +26,12 @@ export class Ls extends Command {
     return {
       status: 'success',
       messages: [
-        listMessage,
+        {
+          type: 'system',
+          texts: [
+            { text: listMessage }
+          ]
+        }
       ]
     };
   }

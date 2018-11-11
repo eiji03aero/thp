@@ -23,7 +23,7 @@ export class Command {
   }
 
   execute () {
-    return [ 'command' ];
+    return [ { type: 'system', texts: { text: 'command' } } ];
   }
 
   /* -------------------- Private methods -------------------- */

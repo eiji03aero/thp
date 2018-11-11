@@ -18,7 +18,12 @@ export class Rm extends Command {
     return {
       status: 'success',
       messages: [
-        'Deleted the file'
+        {
+          type: 'system',
+          texts: [
+            { text: 'deleted the file' }
+          ]
+        }
       ]
     };
   }

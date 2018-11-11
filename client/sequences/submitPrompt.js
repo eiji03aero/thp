@@ -5,14 +5,17 @@ import { executeCommand } from "../models/Commands";
 
 export const submitPrompt = () => (dispatch, getState) => {
   const {
-    terminal: { currentMessage },
+    terminal: { prompt, currentMessage },
     user: { name },
     fileSystem: { currentDirectory },
   } = getState();
 
   dispatch(terminalActions.addMessage({
     type: 'user',
-    text: `${name}:${currentDirectory.name}$ ${currentMessage}`,
+    texts: [
+      ...prompt,
+      { text: currentMessage },
+    ],
   }));
 
 
@@ -22,10 +25,7 @@ export const submitPrompt = () => (dispatch, getState) => {
   });
 
   _.each(result.messages, message => {
-    dispatch(terminalActions.addMessage({
-      type: 'system',
-      text: message,
-    }));
+    dispatch(terminalActions.addMessage(message));
   });
 
   if (result.moveTo) {

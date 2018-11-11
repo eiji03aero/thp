@@ -43,7 +43,7 @@ const Indicator = styled.div`
   .ping-pong {
     position: absolute;
     height: 100%;
-    background-color: ${colors.primaryBlue};
+    background-color: ${colors.blue};
     animation: ${doubleBullet} 3s linear infinite;
   }
 `;
