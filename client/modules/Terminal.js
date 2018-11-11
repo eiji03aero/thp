@@ -16,7 +16,7 @@ export const updatePromptStatus = ({ userName, directoryName }) => ({
     prompt: [
       { text: userName },
       { text: ':' },
-      { text: directoryName, color: colors.blue },
+      { text: directoryName, color: 'blue' },
       { text: '$ ' },
     ],
   },

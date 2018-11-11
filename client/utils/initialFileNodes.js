@@ -125,6 +125,18 @@ export const homeDirectory = new Directory({
     configDirectory,
     shareDirectory,
     desktopDirectory,
+    new TextFile({
+      name: 'README.txt',
+      content: 'read me here man',
+    }),
+    new TextFile({
+      name: 'todo.txt',
+      content: 'do it man',
+    }),
+    new TextFile({
+      name: 'site-policy',
+      content: 'there is no such thing as policy man',
+    }),
   ],
 })
 

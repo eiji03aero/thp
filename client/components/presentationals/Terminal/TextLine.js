@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from "styled-components";
 import _ from "lodash";
+import { getColor } from "../../../utils/colors.js";
 
 const TextLineDiv = styled.div`
   display: block;
+`;
+
+const TextLineSpan = styled.span`
+  white-space: pre-wrap;
 `;
 
 export const TextLine = ({
@@ -13,11 +18,11 @@ export const TextLine = ({
   return (
     <TextLineDiv>
       { _.map(message.texts, (t, idx) => (
-        <span key={idx}
-          style={{ color: t.color}}
+        <TextLineSpan key={idx}
+          style={{ color: getColor(t.color) }}
         >
           { t.text }
-        </span>
+        </TextLineSpan>
       ))}
 
       { children }

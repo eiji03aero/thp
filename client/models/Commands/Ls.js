@@ -17,20 +17,19 @@ export class Ls extends Command {
 
   execute () {
     const { children } = this.currentDirectory;
-    const listMessage = _.reduce(
-      children,
-      ( accum, current ) => accum + ' ' + current.name,
-      ''
-    );
+    const maxNameLength = Math.max(...children.map(child => child.name.length));
+    const paddedNameLength = maxNameLength + 1;
+    const childNameList = children.map(child => ({
+      color: child.isDirectory() ? 'blue' : 'white',
+      text: _.padEnd(child.name, paddedNameLength),
+    }));
 
     return {
       status: 'success',
       messages: [
         {
           type: 'system',
-          texts: [
-            { text: listMessage }
-          ]
+          texts: childNameList
         }
       ]
     };

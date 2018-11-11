@@ -9,3 +9,5 @@ export const colors = {
 
   cursorBlue: '#2060a0',
 };
+
+export const getColor = color => colors[color] || colors.white;

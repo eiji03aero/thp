@@ -1,7 +1,8 @@
 import { getCurrentTime } from "../utils/date.js";
+import { Directory } from "./Directory.js";
 
 // interface {
-//   type: constructor;
+//   type: constructor.name;
 //   name: String;
 //   parent: FileSystemNode;
 //   createdAt: String;
@@ -13,4 +14,6 @@ export class FileSystemNode {
     this.name = params.name;
     this.createdAt = getCurrentTime();
   }
+
+  isDirectory () { return this.type === 'Directory' }
 }
