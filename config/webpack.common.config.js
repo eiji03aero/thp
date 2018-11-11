@@ -10,8 +10,8 @@ module.exports = {
     pathResolver('client/index.js'),
   ],
   output: {
-    path: pathResolver('build'),
-    filename: 'bundle.js',
+    path: pathResolver('public'),
+    filename: 'build/bundle.js',
   },
   module: {
     rules: [
