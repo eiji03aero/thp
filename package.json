@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "./node_modules/.bin/webpack --config ./config/webpack.dev.config2.js -w & nodemon ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/.bin/webpack-dev-server --config ./config/webpack.dev.config.js --progress",
     "build:dev": "./node_modules/.bin/webpack --config ./config/webpack.dev.config.js --progress",
@@ -20,23 +21,29 @@
     "babel-loader": "^8.0.4",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "nodemon": "^1.18.6",
     "ramda": "^0.25.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "serialize-javascript": "^1.5.0",
     "styled-components": "^4.0.3",
     "uuid": "^3.3.2",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
-    "webpack-merge": "^4.1.4"
+    "webpack-merge": "^4.1.4",
+    "webpack-node-externals": "^1.7.2"
   }
 }
