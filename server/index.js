@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>SSR title</title>
+        <title>THP</title>
         <script src="/build/bundle.js" defer></script>
       </head>
       <body>
