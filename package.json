@@ -8,13 +8,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/.bin/webpack-dev-server --config ./config/webpack.dev.config.js --progress",
     "build:dev": "./node_modules/.bin/webpack --config ./config/webpack.dev.config.js --progress",
-    "server:dev": "npm run build:dev && node ./server/index.js"
+    "build:dev:watch": "./node_modules/.bin/webpack --watch --config ./config/webpack.dev.config.js --progress",
+    "server:dev": "npm run build:dev:watch && babel-node ./server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",

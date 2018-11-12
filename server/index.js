@@ -1,7 +1,16 @@
-const { createServer } = require('http');
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
+import { createServer } from 'http';
+import path from 'path';
+import express from 'express';
+import bodyParser from 'body-parser';
+import serialize from 'serialize-javascript';
+
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { Provider } from "react-redux";
+import { StaticRouter } from "react-router-dom";
+
+import { App } from "../client/App.js";
+import { createStore } from "../client/store";
 
 const app = express();
 const port = 3000;
@@ -12,7 +21,28 @@ app.use(bodyParser.json());
 app.use('/favicon.ico', (req, res) => res.status(204).send());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, '../public/build/index.html')));
+app.get('*', (req, res) => {
+  const store = createStore();
+  const markup = renderToString(
+    <StaticRouter location={req.url} context={{}}>
+      <Provider store={store}>
+        <App/>
+      </Provider>
+    </StaticRouter>
+  );
+
+  res.send(`
+    <html>
+      <head>
+        <title>SSR title</title>
+        <script src="/build/bundle.js" defer></script>
+      </head>
+      <body>
+        <div id="app-root">${ markup }</div>
+      </body>
+    </html>
+  `);
+});
 
 const server = createServer(app);
 
