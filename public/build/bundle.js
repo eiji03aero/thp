@@ -104,7 +104,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _containers_TerminalPageContainer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./containers/TerminalPageContainer.js */ "./client/containers/TerminalPageContainer.js");
 /* harmony import */ var _containers_BootAppPageContainer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./containers/BootAppPageContainer.js */ "./client/containers/BootAppPageContainer.js");
-/* harmony import */ var _GlobalStyle_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./GlobalStyle.js */ "./client/GlobalStyle.js");
+/* harmony import */ var _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/NotFoundPage.tsx */ "./client/pages/NotFoundPage.tsx");
+/* harmony import */ var _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/TodoPage.tsx */ "./client/pages/TodoPage.tsx");
+/* harmony import */ var _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _GlobalStyle_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./GlobalStyle.js */ "./client/GlobalStyle.js");
 function _templateObject() {
   var data = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n"]);
 
@@ -124,17 +128,20 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
+
+
 var AppDiv = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject());
 var App = function App(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AppDiv, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](AppDiv, null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     exact: true,
     path: "/",
     component: _containers_TerminalPageContainer_js__WEBPACK_IMPORTED_MODULE_4__["TerminalPageContainer"]
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
-    component: function component() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "not found");
-    }
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_containers_BootAppPageContainer_js__WEBPACK_IMPORTED_MODULE_5__["BootAppPageContainer"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_GlobalStyle_js__WEBPACK_IMPORTED_MODULE_6__["GlobalStyle"], null));
+  }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+    path: "/todos",
+    component: _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__["TodoPage"]
+  }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+    component: _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__["NotFoundPage"]
+  })), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_containers_BootAppPageContainer_js__WEBPACK_IMPORTED_MODULE_5__["BootAppPageContainer"], null), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_GlobalStyle_js__WEBPACK_IMPORTED_MODULE_8__["GlobalStyle"], null));
 };
 
 /***/ }),
@@ -237,7 +244,7 @@ function (_React$Component) {
       });
     });
 
-    _this.textarea = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.textarea = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     return _this;
   }
 
@@ -251,7 +258,7 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(StyledHiddenTextArea, {
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](StyledHiddenTextArea, {
         ref: this.textarea,
         value: this.props.value,
         onChange: function onChange(e) {
@@ -266,7 +273,7 @@ function (_React$Component) {
   }]);
 
   return HiddenTextArea;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 _defineProperty(HiddenTextArea, "defaultProps", {
   onKeyUP: function onKeyUP(f) {
@@ -325,7 +332,7 @@ var blink = Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["keyframes"])(
 var PromptSpan = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].span(_templateObject2(), _utils_colors_js__WEBPACK_IMPORTED_MODULE_4__["colors"].white, blink);
 
 var BlankCursor = function BlankCursor() {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PromptSpan, {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](PromptSpan, {
     className: "on-cursor blank"
   });
 };
@@ -333,16 +340,16 @@ var BlankCursor = function BlankCursor() {
 var PromptInput = function PromptInput(_ref) {
   var text = _ref.text,
       cursorPosition = _ref.cursorPosition;
-  if (lodash__WEBPACK_IMPORTED_MODULE_3___default.a.isNil(text)) return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(BlankCursor, null);
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, lodash__WEBPACK_IMPORTED_MODULE_3___default.a.map(text.split(''), function (t, idx) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PromptSpan, {
+  if (lodash__WEBPACK_IMPORTED_MODULE_3__["isNil"](text)) return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](BlankCursor, null);
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, lodash__WEBPACK_IMPORTED_MODULE_3__["map"](text.split(''), function (t, idx) {
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](PromptSpan, {
       key: idx,
-      className: classnames__WEBPACK_IMPORTED_MODULE_2___default()({
+      className: classnames__WEBPACK_IMPORTED_MODULE_2__({
         'on-cursor': cursorPosition === idx,
         'blank': t === ' '
       })
     }, t);
-  }), cursorPosition === text.length && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(BlankCursor, null));
+  }), cursorPosition === text.length && react__WEBPACK_IMPORTED_MODULE_0__["createElement"](BlankCursor, null));
 };
 
 /***/ }),
@@ -377,10 +384,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var TermDiv = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_templateObject(), _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__["colors"].deepGreen);
-var Term = react__WEBPACK_IMPORTED_MODULE_0___default.a.forwardRef(function (_ref, ref) {
+var Term = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (_ref, ref) {
   var children = _ref.children,
       onClick = _ref.onClick;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TermDiv, {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TermDiv, {
     ref: ref,
     onClick: onClick
   }, children);
@@ -435,8 +442,8 @@ var TextLineSpan = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].spa
 var TextLine = function TextLine(_ref) {
   var children = _ref.children,
       message = _ref.message;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TextLineDiv, null, lodash__WEBPACK_IMPORTED_MODULE_2___default.a.map(message.texts, function (t, idx) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(TextLineSpan, {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextLineDiv, null, lodash__WEBPACK_IMPORTED_MODULE_2__["map"](message.texts, function (t, idx) {
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TextLineSpan, {
       key: idx,
       style: {
         color: Object(_utils_colors_js__WEBPACK_IMPORTED_MODULE_3__["getColor"])(t.color)
@@ -517,7 +524,7 @@ var doubleBullet = Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["keyfra
 var Indicator = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_templateObject2(), _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__["colors"].black, _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__["colors"].blue, doubleBullet);
 var HorizontalLoadingIndicator = function HorizontalLoadingIndicator(_ref) {
   var size = _ref.size;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Indicator, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Indicator, null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
     className: "ping-pong"
   }));
 };
@@ -633,9 +640,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var store = Object(_store__WEBPACK_IMPORTED_MODULE_6__["createStore"])();
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
+react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
   store: store
-}, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_App_js__WEBPACK_IMPORTED_MODULE_4__["App"], null))), document.querySelector('#app-root'));
+}, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_App_js__WEBPACK_IMPORTED_MODULE_4__["App"], null))), document.querySelector('#app-root'));
 store.dispatch(Object(_sequences_bootApp_js__WEBPACK_IMPORTED_MODULE_5__["bootApp"])());
 
 /***/ }),
@@ -896,7 +903,7 @@ function (_Command) {
       var childNameList = children.map(function (child) {
         return {
           color: child.isDirectory() ? 'blue' : 'white',
-          text: lodash__WEBPACK_IMPORTED_MODULE_0___default.a.padEnd(child.name, paddedNameLength)
+          text: lodash__WEBPACK_IMPORTED_MODULE_0__["padEnd"](child.name, paddedNameLength)
         };
       });
       return {
@@ -1333,11 +1340,9 @@ function (_FileSystemNode) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Directory).call(this, params));
     _this.children = [];
-
-    lodash__WEBPACK_IMPORTED_MODULE_0___default.a.each(params.children, function (child) {
+    lodash__WEBPACK_IMPORTED_MODULE_0__["each"](params.children, function (child) {
       return _this.addChild(child);
     });
-
     return _this;
   }
 
@@ -1360,12 +1365,12 @@ function (_FileSystemNode) {
       var childrenNames = this.children.map(function (child) {
         return child.name;
       });
-      return lodash__WEBPACK_IMPORTED_MODULE_0___default.a.includes(childrenNames, childName);
+      return lodash__WEBPACK_IMPORTED_MODULE_0__["includes"](childrenNames, childName);
     }
   }, {
     key: "find",
     value: function find(childName) {
-      return lodash__WEBPACK_IMPORTED_MODULE_0___default.a.find(this.children, {
+      return lodash__WEBPACK_IMPORTED_MODULE_0__["find"](this.children, {
         name: childName
       });
     }
@@ -1460,9 +1465,8 @@ function () {
       var fragments = this._parsePathString(path);
 
       var targetNode = currentDirectory;
-
-      lodash__WEBPACK_IMPORTED_MODULE_0___default.a.each(fragments, function (fragment) {
-        if (lodash__WEBPACK_IMPORTED_MODULE_0___default.a.isNil(targetNode)) {
+      lodash__WEBPACK_IMPORTED_MODULE_0__["each"](fragments, function (fragment) {
+        if (lodash__WEBPACK_IMPORTED_MODULE_0__["isNil"](targetNode)) {
           error = {
             message: "Could not resolve path"
           };
@@ -1478,7 +1482,6 @@ function () {
           return false;
         }
       });
-
       return {
         error: error,
         node: targetNode
@@ -1627,13 +1630,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Message", function() { return Message; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var uuid_v4__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
-/* harmony import */ var uuid_v4__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(uuid_v4__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/colors.js */ "./client/utils/colors.js");
+/* harmony import */ var uuid_v4__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
+/* harmony import */ var uuid_v4__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(uuid_v4__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_colors_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/colors.js */ "./client/utils/colors.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 
 
  // const text = {
@@ -1647,7 +1647,7 @@ var Message = function Message(_ref) {
 
   _classCallCheck(this, Message);
 
-  this.id = uuid_v4__WEBPACK_IMPORTED_MODULE_1___default()();
+  this.id = uuid_v4__WEBPACK_IMPORTED_MODULE_0__();
   this.type = type;
   this.texts = texts;
 };
@@ -1723,7 +1723,6 @@ var fileSystemReducer = function fileSystemReducer() {
       lodash__WEBPACK_IMPORTED_MODULE_0___default.a.each(action.payload.children, function (child) {
         return state.root.addChild(child);
       });
-
       return _objectSpread({}, state);
 
     default:
@@ -1942,7 +1941,7 @@ var makeMessage = function makeMessage(_ref3) {
   var type = _ref3.type,
       text = _ref3.text;
   return {
-    id: uuid_v4__WEBPACK_IMPORTED_MODULE_0___default()(),
+    id: uuid_v4__WEBPACK_IMPORTED_MODULE_0__(),
     type: type,
     text: text
   };
@@ -2083,7 +2082,7 @@ function (_React$Component) {
     _classCallCheck(this, BootAppPage);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BootAppPage).call(this, props));
-    _this.container = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.container = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     return _this;
   }
 
@@ -2102,14 +2101,54 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LoadingContainer, {
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](LoadingContainer, {
         ref: this.container
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LoadingBox, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_presentationals_common_HorizontalLoadingIndicator_js__WEBPACK_IMPORTED_MODULE_3__["HorizontalLoadingIndicator"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "It's me, booting app ...")));
+      }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](LoadingBox, null, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_presentationals_common_HorizontalLoadingIndicator_js__WEBPACK_IMPORTED_MODULE_3__["HorizontalLoadingIndicator"], null), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", null, "It's me, booting app ...")));
     }
   }]);
 
   return BootAppPage;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/***/ }),
+
+/***/ "./client/pages/NotFoundPage.tsx":
+/*!***************************************!*\
+  !*** ./client/pages/NotFoundPage.tsx ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const Button = ({ onClick, }) => {
+    return (React.createElement("button", { onClick: onClick }, "button desu"));
+};
+class NotFoundPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = (e) => {
+            this.setState({
+                message: 'clicked already man',
+            });
+        };
+        this.state = {
+            isClicked: false,
+            message: 'aint clicked here',
+        };
+    }
+    render() {
+        return (React.createElement("div", null,
+            React.createElement("p", { style: { color: 'white' } }, "not found"),
+            React.createElement("h3", null, "you should go to sleep"),
+            React.createElement(Button, { onClick: this.handleClick }),
+            React.createElement("p", null, this.state.message)));
+    }
+}
+exports.NotFoundPage = NotFoundPage;
+
 
 /***/ }),
 
@@ -2183,8 +2222,8 @@ function (_React$Component) {
       _this.textarea.current.focus();
     });
 
-    _this.textarea = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
-    _this.terminal = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.textarea = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
+    _this.terminal = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     return _this;
   }
 
@@ -2211,22 +2250,22 @@ function (_React$Component) {
           currentDirectory = _this$props.currentDirectory,
           userName = _this$props.userName,
           onTypeIntoPrompt = _this$props.onTypeIntoPrompt;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["Term"], {
+      return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["Term"], {
         ref: this.terminal,
         onClick: this.handleClickTerm
-      }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(messages, function (message, idx) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["TextLine"], {
+      }, lodash__WEBPACK_IMPORTED_MODULE_1__["map"](messages, function (message, idx) {
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["TextLine"], {
           key: message.id,
           message: message
         });
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["TextLine"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["TextLine"], {
         message: {
           texts: prompt
         }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["PromptInput"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_presentationals_Terminal__WEBPACK_IMPORTED_MODULE_3__["PromptInput"], {
         text: currentMessage,
         cursorPosition: cursorPosition
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_HiddenTextArea_js__WEBPACK_IMPORTED_MODULE_2__["HiddenTextArea"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_HiddenTextArea_js__WEBPACK_IMPORTED_MODULE_2__["HiddenTextArea"], {
         ref: this.textarea,
         value: currentMessage,
         onChange: function onChange(e) {
@@ -2239,7 +2278,119 @@ function (_React$Component) {
   }]);
 
   return TerminalPage;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/***/ }),
+
+/***/ "./client/pages/TodoPage.tsx":
+/*!***********************************!*\
+  !*** ./client/pages/TodoPage.tsx ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const R = __webpack_require__(/*! ramda */ "./node_modules/ramda/es/index.js");
+const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+const uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const TodoList_1 = __webpack_require__(/*! ./Todos/TodoList */ "./client/pages/Todos/TodoList.tsx");
+const TodoPageDiv = styled_components_1.default.div `
+  display: block;
+  width: 100%;
+  height: 100%;
+`;
+class TodoPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleToggleCompleted = (e, todoId) => {
+            const todos = lodash.map(this.state.todos, todo => {
+                return todo.id === todoId
+                    ? R.assoc('completed', R.not(todo.completed), todo)
+                    : todo;
+            });
+            this.setState({ todos });
+        };
+        this.state = {
+            todos: [
+                {
+                    id: uuid(),
+                    title: 'domo',
+                    completed: false,
+                }
+            ]
+        };
+    }
+    render() {
+        const { todos } = this.state;
+        return (React.createElement(TodoPageDiv, null,
+            React.createElement("h1", null, "Todo page here"),
+            React.createElement(react_router_dom_1.Switch, null,
+                React.createElement(react_router_dom_1.Route, { path: '/', render: () => (React.createElement(TodoList_1.TodoList, { todos: todos, onToggleCompleted: this.handleToggleCompleted })) }))));
+    }
+}
+exports.TodoPage = TodoPage;
+
+
+/***/ }),
+
+/***/ "./client/pages/Todos/TodoList.tsx":
+/*!*****************************************!*\
+  !*** ./client/pages/Todos/TodoList.tsx ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+const TodoListItem_1 = __webpack_require__(/*! ./TodoListItem */ "./client/pages/Todos/TodoListItem.tsx");
+const TodoListDiv = styled_components_1.default.div `
+  display: block;
+`;
+exports.TodoList = ({ todos, onToggleCompleted, }) => {
+    return (React.createElement(TodoListDiv, null, lodash.map(todos, todo => (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })))));
+};
+
+
+/***/ }),
+
+/***/ "./client/pages/Todos/TodoListItem.tsx":
+/*!*********************************************!*\
+  !*** ./client/pages/Todos/TodoListItem.tsx ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const cn = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+const TodoListItemDiv = styled_components_1.default.div `
+  display: flex;
+  span {
+    margin-left: 1rem;
+  }
+
+  .completed {
+    text-decoration: line-through;
+  }
+`;
+exports.TodoListItem = ({ todo, onToggleCompleted, }) => {
+    return (React.createElement(TodoListItemDiv, { className: cn({ 'completed': todo.completed }) },
+        React.createElement("input", { type: "checkbox", value: todo.completed.toString(), onChange: (e) => onToggleCompleted(e, todo.id) }),
+        React.createElement("span", null, todo.title)));
+};
+
 
 /***/ }),
 
@@ -2299,7 +2450,7 @@ var bootApp = function bootApp() {
           text: 'log in succeeded!'
         }]
       }));
-    }, 4000);
+    }, 500);
   };
 };
 
@@ -2351,8 +2502,7 @@ var submitPrompt = function submitPrompt() {
       message: currentMessage,
       currentDirectory: currentDirectory
     });
-
-    lodash__WEBPACK_IMPORTED_MODULE_0___default.a.each(result.messages, function (message) {
+    lodash__WEBPACK_IMPORTED_MODULE_0__["each"](result.messages, function (message) {
       dispatch(_modules_Terminal_js__WEBPACK_IMPORTED_MODULE_1__["addMessage"](message));
     });
 
@@ -2390,7 +2540,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var createStore = function createStore() {
-  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_modules__WEBPACK_IMPORTED_MODULE_3__["rootReducer"], Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"], redux_logger__WEBPACK_IMPORTED_MODULE_2___default.a));
+  return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_modules__WEBPACK_IMPORTED_MODULE_3__["rootReducer"], Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__, redux_logger__WEBPACK_IMPORTED_MODULE_2__));
 };
 
 /***/ }),
@@ -2436,7 +2586,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 
 var getCurrentTime = function getCurrentTime() {
-  return moment__WEBPACK_IMPORTED_MODULE_0___default()().format();
+  return moment__WEBPACK_IMPORTED_MODULE_0__().format();
 };
 
 /***/ }),

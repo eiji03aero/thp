@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from "styled-components";
-import _ from "lodash";
+import * as lodash from "lodash";
 import { getColor } from "../../../utils/colors.js";
 
 const TextLineDiv = styled.div`
@@ -17,7 +17,7 @@ export const TextLine = ({
 }) => {
   return (
     <TextLineDiv>
-      { _.map(message.texts, (t, idx) => (
+      { lodash.map(message.texts, (t, idx) => (
         <TextLineSpan key={idx}
           style={{ color: getColor(t.color) }}
         >

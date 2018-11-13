@@ -1,5 +1,5 @@
-import React from 'react';
-import _ from "lodash";
+import * as React from 'react';
+import * as lodash from "lodash";
 
 import { HiddenTextArea } from "../components/HiddenTextArea.js";
 import { Term, PromptInput, TextLine } from "../components/presentationals/Terminal";
@@ -49,7 +49,7 @@ export class TerminalPage extends React.Component {
         ref={this.terminal}
         onClick={this.handleClickTerm}
       >
-        { _.map(messages, (message, idx) => {
+        { lodash.map(messages, (message, idx) => {
           return (
             <TextLine key={message.id}
               message={message}

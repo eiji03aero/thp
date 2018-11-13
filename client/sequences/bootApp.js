@@ -34,5 +34,5 @@ export const bootApp = () => ( dispatch, getState ) => {
       type: 'system',
       texts: [ { text: 'log in succeeded!' } ],
     }));
-  }, 4000);
+  }, 500);
 };

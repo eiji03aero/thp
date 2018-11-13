@@ -1,4 +1,4 @@
-import _ from "lodash";
+import * as lodash from "lodash";
 import { FileSystemNode } from "./FileSystemNode.js";
 
 // interface {
@@ -15,7 +15,7 @@ export class Directory extends FileSystemNode {
     super(params);
     this.children = [];
 
-    _.each(params.children, (child) => this.addChild(child));
+    lodash.each(params.children, (child) => this.addChild(child));
   }
 
   addChild (child) {
@@ -29,10 +29,10 @@ export class Directory extends FileSystemNode {
 
   contains (childName) {
     const childrenNames = this.children.map(child => child.name);
-    return _.includes(childrenNames, childName);
+    return lodash.includes(childrenNames, childName);
   }
 
   find (childName) {
-    return _.find(this.children, { name: childName });
+    return lodash.find(this.children, { name: childName });
   }
 }

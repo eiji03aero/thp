@@ -1,10 +1,10 @@
 import { createServer } from 'http';
-import path from 'path';
-import express from 'express';
-import bodyParser from 'body-parser';
-import serialize from 'serialize-javascript';
+import * as path from 'path';
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import * as serialize from 'serialize-javascript';
 
-import React from 'react';
+import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";

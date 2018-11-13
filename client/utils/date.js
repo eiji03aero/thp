@@ -1,3 +1,3 @@
-import moment from "moment";
+import * as moment from "moment";
 
 export const getCurrentTime = () => moment().format();

@@ -1,5 +1,4 @@
-import _ from "lodash";
-import uuid from 'uuid/v4';
+import * as uuid from 'uuid/v4';
 import { colors } from "../utils/colors.js";
 
 // const text = {

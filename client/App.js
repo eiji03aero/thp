@@ -1,10 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 
 import { TerminalPageContainer } from "./containers/TerminalPageContainer.js";
 import { BootAppPageContainer } from "./containers/BootAppPageContainer.js";
+import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+
+import { TodoPage } from "./pages/TodoPage.tsx";
 
 import { GlobalStyle } from './GlobalStyle.js';
 
@@ -18,7 +21,8 @@ export const App = props => (
 
     <Switch>
       <Route exact path='/' component={TerminalPageContainer} />
-      <Route component={() => <p>not found</p>}/>
+      <Route path='/todos' component={TodoPage} />
+      <Route component={NotFoundPage}/>
     </Switch>
 
     <BootAppPageContainer/>

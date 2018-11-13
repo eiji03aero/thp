@@ -1,6 +1,6 @@
 import { createStore as reduxCreateStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import * as thunk from 'redux-thunk';
+import * as logger from 'redux-logger';
 import { rootReducer } from '../modules';
 
 export const createStore = () => {
