@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/webpack --config ./config/webpack.dev.config2.js -w & nodemon ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/webpack --config ./webpack.dev.config2.js -w & nodemon ./server.js",
     "dev": "npm run build:dev:watch & npm run server:dev",
-    "build:dev": "./node_modules/.bin/webpack --config ./config/webpack.dev.config.js --progress",
-    "build:dev:watch": "./node_modules/.bin/webpack --watch --config ./config/webpack.dev.config.js --progress",
+    "build:dev": "./node_modules/.bin/webpack --config ./webpack.dev.config.js --progress",
+    "build:dev:watch": "./node_modules/.bin/webpack --watch --config ./webpack.dev.config.js --progress",
     "server:dev": "ts-node ./server/index.js"
   },
   "keywords": [],
