@@ -2121,32 +2121,49 @@ function (_React$Component) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const Button = ({ onClick, }) => {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var Button = function (_a) {
+    var onClick = _a.onClick;
     return (React.createElement("button", { onClick: onClick }, "button desu"));
 };
-class NotFoundPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = (e) => {
-            this.setState({
-                message: 'clicked already man',
+var NotFoundPage = /** @class */ (function (_super) {
+    __extends(NotFoundPage, _super);
+    function NotFoundPage(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleClick = function (e) {
+            _this.setState({
+                message: 'clicked already man'
             });
         };
-        this.state = {
+        _this.state = {
             isClicked: false,
-            message: 'aint clicked here',
+            message: 'aint clicked here'
         };
+        return _this;
     }
-    render() {
+    NotFoundPage.prototype.render = function () {
         return (React.createElement("div", null,
             React.createElement("p", { style: { color: 'white' } }, "not found"),
             React.createElement("h3", null, "you should go to sleep"),
             React.createElement(Button, { onClick: this.handleClick }),
             React.createElement("p", null, this.state.message)));
-    }
-}
+    };
+    return NotFoundPage;
+}(React.Component));
 exports.NotFoundPage = NotFoundPage;
 
 
@@ -2291,49 +2308,67 @@ function (_React$Component) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-const R = __webpack_require__(/*! ramda */ "./node_modules/ramda/es/index.js");
-const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-const uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
-const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-const TodoList_1 = __webpack_require__(/*! ./Todos/TodoList */ "./client/pages/Todos/TodoList.tsx");
-const TodoPageDiv = styled_components_1.default.div `
-  display: block;
-  width: 100%;
-  height: 100%;
-`;
-class TodoPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleToggleCompleted = (e, todoId) => {
-            const todos = lodash.map(this.state.todos, todo => {
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+var R = __webpack_require__(/*! ramda */ "./node_modules/ramda/es/index.js");
+var styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+var uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
+var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+var TodoList_1 = __webpack_require__(/*! ./Todos/TodoList */ "./client/pages/Todos/TodoList.tsx");
+var TodoPageDiv = styled_components_1["default"].div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  display: block;\n  width: 100%;\n  height: 100%;\n"], ["\n  display: block;\n  width: 100%;\n  height: 100%;\n"])));
+var TodoPage = /** @class */ (function (_super) {
+    __extends(TodoPage, _super);
+    function TodoPage(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleToggleCompleted = function (e, todoId) {
+            var todos = lodash.map(_this.state.todos, function (todo) {
                 return todo.id === todoId
                     ? R.assoc('completed', R.not(todo.completed), todo)
                     : todo;
             });
-            this.setState({ todos });
+            _this.setState({ todos: todos });
         };
-        this.state = {
+        _this.state = {
             todos: [
                 {
                     id: uuid(),
                     title: 'domo',
-                    completed: false,
+                    completed: false
                 }
             ]
         };
+        return _this;
     }
-    render() {
-        const { todos } = this.state;
+    TodoPage.prototype.render = function () {
+        var _this = this;
+        var todos = this.state.todos;
         return (React.createElement(TodoPageDiv, null,
             React.createElement("h1", null, "Todo page here"),
             React.createElement(react_router_dom_1.Switch, null,
-                React.createElement(react_router_dom_1.Route, { path: '/', render: () => (React.createElement(TodoList_1.TodoList, { todos: todos, onToggleCompleted: this.handleToggleCompleted })) }))));
-    }
-}
+                React.createElement(react_router_dom_1.Route, { path: '/', render: function () { return (React.createElement(TodoList_1.TodoList, { todos: todos, onToggleCompleted: _this.handleToggleCompleted })); } }))));
+    };
+    return TodoPage;
+}(React.Component));
 exports.TodoPage = TodoPage;
+var templateObject_1;
 
 
 /***/ }),
@@ -2347,17 +2382,21 @@ exports.TodoPage = TodoPage;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-const TodoListItem_1 = __webpack_require__(/*! ./TodoListItem */ "./client/pages/Todos/TodoListItem.tsx");
-const TodoListDiv = styled_components_1.default.div `
-  display: block;
-`;
-exports.TodoList = ({ todos, onToggleCompleted, }) => {
-    return (React.createElement(TodoListDiv, null, lodash.map(todos, todo => (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })))));
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
 };
+exports.__esModule = true;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+var styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+var TodoListItem_1 = __webpack_require__(/*! ./TodoListItem */ "./client/pages/Todos/TodoListItem.tsx");
+var TodoListDiv = styled_components_1["default"].div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  display: block;\n"], ["\n  display: block;\n"])));
+exports.TodoList = function (_a) {
+    var todos = _a.todos, onToggleCompleted = _a.onToggleCompleted;
+    return (React.createElement(TodoListDiv, null, lodash.map(todos, function (todo) { return (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })); })));
+};
+var templateObject_1;
 
 
 /***/ }),
@@ -2371,25 +2410,22 @@ exports.TodoList = ({ todos, onToggleCompleted, }) => {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-const cn = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-const TodoListItemDiv = styled_components_1.default.div `
-  display: flex;
-  span {
-    margin-left: 1rem;
-  }
-
-  .completed {
-    text-decoration: line-through;
-  }
-`;
-exports.TodoListItem = ({ todo, onToggleCompleted, }) => {
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
+exports.__esModule = true;
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var cn = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+var styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+var TodoListItemDiv = styled_components_1["default"].div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  display: flex;\n  span {\n    margin-left: 1rem;\n  }\n\n  .completed {\n    text-decoration: line-through;\n  }\n"], ["\n  display: flex;\n  span {\n    margin-left: 1rem;\n  }\n\n  .completed {\n    text-decoration: line-through;\n  }\n"])));
+exports.TodoListItem = function (_a) {
+    var todo = _a.todo, onToggleCompleted = _a.onToggleCompleted;
     return (React.createElement(TodoListItemDiv, { className: cn({ 'completed': todo.completed }) },
-        React.createElement("input", { type: "checkbox", value: todo.completed.toString(), onChange: (e) => onToggleCompleted(e, todo.id) }),
+        React.createElement("input", { type: "checkbox", value: todo.completed.toString(), onChange: function (e) { return onToggleCompleted(e, todo.id); } }),
         React.createElement("span", null, todo.title)));
 };
+var templateObject_1;
 
 
 /***/ }),

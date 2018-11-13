@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const pathResolver = pathName => path.resolve(__dirname, '../', pathName);
 
@@ -36,9 +35,4 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: pathResolver('client/index.html'),
-    }),
-  ],
 };
