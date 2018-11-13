@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import * as terminalActions from '../modules/Terminal.js';
 import * as fileSystemActions from '../modules/FileSystem.js';
 import { executeCommand } from "../models/Commands";
@@ -24,7 +24,7 @@ export const submitPrompt = () => (dispatch, getState) => {
     currentDirectory: currentDirectory
   });
 
-  lodash.each(result.messages, message => {
+  _.each(result.messages, message => {
     dispatch(terminalActions.addMessage(message));
   });
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { keyframes } from "styled-components";
 import * as cn from 'classnames';
-import * as lodash from "lodash";
+import * as _ from "lodash";
 
 import { colors } from "../../../utils/colors.js";
 
@@ -47,11 +47,11 @@ export const PromptInput = ({
   text,
   cursorPosition,
 }) => {
-  if (lodash.isNil(text)) return <BlankCursor/>;
+  if (_.isNil(text)) return <BlankCursor/>;
 
   return (
     <React.Fragment>
-      { lodash.map(text.split(''), (t,idx) => (
+      { _.map(text.split(''), (t,idx) => (
         <PromptSpan
           key={idx}
           className={cn({

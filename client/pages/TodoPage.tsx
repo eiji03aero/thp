@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import * as R from "ramda";
 import * as cn from "classnames";
 import styled from "styled-components";
@@ -38,7 +38,7 @@ export class TodoPage extends React.Component<Props, State> {
   }
 
   handleToggleCompleted = (e: React.SyntheticEvent, todoId: string): void => {
-    const todos = lodash.map(this.state.todos, todo => {
+    const todos = _.map(this.state.todos, todo => {
       return todo.id === todoId
         ? R.assoc('completed', R.not(todo.completed), todo)
         : todo;

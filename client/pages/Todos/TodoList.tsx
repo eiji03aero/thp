@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as cn from "classnames";
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import styled from "styled-components";
 import * as uuid from "uuid/v4";
 
@@ -23,7 +23,7 @@ export const TodoList: React.StatelessComponent<Props> = ({
   return (
     <TodoListDiv>
 
-      { lodash.map(todos, todo => (
+      { _.map(todos, todo => (
         <TodoListItem
           todo={todo}
           onToggleCompleted={onToggleCompleted}

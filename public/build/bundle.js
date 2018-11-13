@@ -104,10 +104,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _containers_TerminalPageContainer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./containers/TerminalPageContainer.js */ "./client/containers/TerminalPageContainer.js");
 /* harmony import */ var _containers_BootAppPageContainer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./containers/BootAppPageContainer.js */ "./client/containers/BootAppPageContainer.js");
-/* harmony import */ var _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/NotFoundPage.tsx */ "./client/pages/NotFoundPage.tsx");
-/* harmony import */ var _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/TodoPage.tsx */ "./client/pages/TodoPage.tsx");
-/* harmony import */ var _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _pages_NotFoundPage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/NotFoundPage */ "./client/pages/NotFoundPage.tsx");
+/* harmony import */ var _pages_NotFoundPage__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_pages_NotFoundPage__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _pages_TodoPage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/TodoPage */ "./client/pages/TodoPage.tsx");
+/* harmony import */ var _pages_TodoPage__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_pages_TodoPage__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _GlobalStyle_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./GlobalStyle.js */ "./client/GlobalStyle.js");
 function _templateObject() {
   var data = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n"]);
@@ -138,9 +138,9 @@ var App = function App(props) {
     component: _containers_TerminalPageContainer_js__WEBPACK_IMPORTED_MODULE_4__["TerminalPageContainer"]
   }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
     path: "/todos",
-    component: _pages_TodoPage_tsx__WEBPACK_IMPORTED_MODULE_7__["TodoPage"]
+    component: _pages_TodoPage__WEBPACK_IMPORTED_MODULE_7__["TodoPage"]
   }), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
-    component: _pages_NotFoundPage_tsx__WEBPACK_IMPORTED_MODULE_6__["NotFoundPage"]
+    component: _pages_NotFoundPage__WEBPACK_IMPORTED_MODULE_6__["NotFoundPage"]
   })), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_containers_BootAppPageContainer_js__WEBPACK_IMPORTED_MODULE_5__["BootAppPageContainer"], null), react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_GlobalStyle_js__WEBPACK_IMPORTED_MODULE_8__["GlobalStyle"], null));
 };
 
@@ -1340,9 +1340,11 @@ function (_FileSystemNode) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Directory).call(this, params));
     _this.children = [];
+
     lodash__WEBPACK_IMPORTED_MODULE_0__["each"](params.children, function (child) {
       return _this.addChild(child);
     });
+
     return _this;
   }
 
@@ -1465,6 +1467,7 @@ function () {
       var fragments = this._parsePathString(path);
 
       var targetNode = currentDirectory;
+
       lodash__WEBPACK_IMPORTED_MODULE_0__["each"](fragments, function (fragment) {
         if (lodash__WEBPACK_IMPORTED_MODULE_0__["isNil"](targetNode)) {
           error = {
@@ -1482,6 +1485,7 @@ function () {
           return false;
         }
       });
+
       return {
         error: error,
         node: targetNode
@@ -1723,6 +1727,7 @@ var fileSystemReducer = function fileSystemReducer() {
       lodash__WEBPACK_IMPORTED_MODULE_0___default.a.each(action.payload.children, function (child) {
         return state.root.addChild(child);
       });
+
       return _objectSpread({}, state);
 
     default:
@@ -2327,7 +2332,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 var R = __webpack_require__(/*! ramda */ "./node_modules/ramda/es/index.js");
 var styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 var uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
@@ -2339,7 +2344,7 @@ var TodoPage = /** @class */ (function (_super) {
     function TodoPage(props) {
         var _this = _super.call(this, props) || this;
         _this.handleToggleCompleted = function (e, todoId) {
-            var todos = lodash.map(_this.state.todos, function (todo) {
+            var todos = _.map(_this.state.todos, function (todo) {
                 return todo.id === todoId
                     ? R.assoc('completed', R.not(todo.completed), todo)
                     : todo;
@@ -2388,13 +2393,13 @@ var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cook
 };
 exports.__esModule = true;
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var lodash = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 var styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 var TodoListItem_1 = __webpack_require__(/*! ./TodoListItem */ "./client/pages/Todos/TodoListItem.tsx");
 var TodoListDiv = styled_components_1["default"].div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  display: block;\n"], ["\n  display: block;\n"])));
 exports.TodoList = function (_a) {
     var todos = _a.todos, onToggleCompleted = _a.onToggleCompleted;
-    return (React.createElement(TodoListDiv, null, lodash.map(todos, function (todo) { return (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })); })));
+    return (React.createElement(TodoListDiv, null, _.map(todos, function (todo) { return (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })); })));
 };
 var templateObject_1;
 
@@ -2538,6 +2543,7 @@ var submitPrompt = function submitPrompt() {
       message: currentMessage,
       currentDirectory: currentDirectory
     });
+
     lodash__WEBPACK_IMPORTED_MODULE_0__["each"](result.messages, function (message) {
       dispatch(_modules_Terminal_js__WEBPACK_IMPORTED_MODULE_1__["addMessage"](message));
     });

@@ -5,9 +5,9 @@ import { Route, Switch } from "react-router-dom";
 
 import { TerminalPageContainer } from "./containers/TerminalPageContainer.js";
 import { BootAppPageContainer } from "./containers/BootAppPageContainer.js";
-import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
-import { TodoPage } from "./pages/TodoPage.tsx";
+import { TodoPage } from "./pages/TodoPage";
 
 import { GlobalStyle } from './GlobalStyle.js';
 

@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import { Command } from "../Command.js";
 
 // interface {
@@ -21,7 +21,7 @@ export class Ls extends Command {
     const paddedNameLength = maxNameLength + 1;
     const childNameList = children.map(child => ({
       color: child.isDirectory() ? 'blue' : 'white',
-      text: lodash.padEnd(child.name, paddedNameLength),
+      text: _.padEnd(child.name, paddedNameLength),
     }));
 
     return {

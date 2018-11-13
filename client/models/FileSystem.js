@@ -1,4 +1,4 @@
-import * as lodash from "lodash";
+import * as _ from "lodash";
 import * as R from "ramda";
 
 export class FileSystem {
@@ -9,8 +9,8 @@ export class FileSystem {
     const fragments = this._parsePathString(path);
     let targetNode = currentDirectory;
 
-    lodash.each(fragments, fragment => {
-      if (lodash.isNil(targetNode)) {
+    _.each(fragments, fragment => {
+      if (_.isNil(targetNode)) {
         error = { message: `Could not resolve path` };
         return false;
       }
