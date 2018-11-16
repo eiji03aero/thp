@@ -6,7 +6,7 @@ const pathResolver = pathName => path.resolve(__dirname, pathName);
 module.exports = {
   devtool: 'source-map',
   entry: [
-    pathResolver('client/index.js'),
+    pathResolver('client/index.tsx'),
   ],
   output: {
     path: pathResolver('public'),
@@ -25,10 +25,6 @@ module.exports = {
         options: {
           configFileName: 'tsconfig.client.json'
         }
-      },
-      {
-        test: /\.html$/,
-        loader: 'html-loader'
       },
     ],
   },
