@@ -9,7 +9,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";
 
-import { App } from "../client/App.js";
+import { App } from "../client/App";
 import { createStore } from "../client/store";
 
 const app = express();

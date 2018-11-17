@@ -1,3 +1,4 @@
+import { Directory } from "../Directory";
 import { Cd } from "./Cd";
 import { Ls } from "./Ls";
 import { Rm } from "./Rm";
@@ -6,10 +7,10 @@ import { Pwd } from "./Pwd";
 import { Touch } from "./Touch";
 import { CommandResult } from "../Command";
 
-export const executeCommand = ({
+export const executeCommand: ({ input, currentDirectory }: { input: string, currentDirectory: Directory }) => CommandResult = ({
   input,
   currentDirectory,
-}): CommandResult => {
+}) => {
   const commandParams = {
     input: input,
     currentDirectory: currentDirectory,

@@ -13,7 +13,7 @@ const initialState = {
 
 /* -------------------- Reducers -------------------- */
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state: UserStoreState = initialState, action: any) => {
   switch (action.type) {
 
     default:

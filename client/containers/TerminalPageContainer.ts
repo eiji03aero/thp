@@ -1,22 +1,21 @@
+import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
+import { RootStoreState } from "../modules";
 import { TerminalPage } from "../pages/TerminalPage";
-import { submitPrompt } from "../sequences/submitPrompt";
 import * as actions from "../modules/Terminal";
 
-const mapStateToProps = ({ terminal, fileSystem, user }) => ({
+const mapStateToProps = ({ terminal, fileSystem, user }: RootStoreState) => ({
   prompt: terminal.prompt,
   currentMessage: terminal.currentMessage,
   cursorPosition: terminal.cursorPosition,
   messages: terminal.messages,
-  currentDirectory: fileSystem.currentDirectory,
-  userName: user.name,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onTypeIntoPrompt: text => dispatch(actions.typeIntoPrompt(text)),
-  onUpdatePromptCursorPosition: position => dispatch(actions.updatePromptCursorPosition(position)),
-  onSubmitPrompt: () => dispatch(submitPrompt()),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onTypeIntoPrompt: (text: string) => dispatch(actions.typeIntoPrompt(text)),
+  onUpdatePromptCursorPosition: (position: number) => dispatch(actions.updatePromptCursorPosition(position)),
+  onSubmitPrompt: () => dispatch(actions.submitPrompt()),
 });
 
 export const TerminalPageContainer = connect(

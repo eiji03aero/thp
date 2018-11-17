@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as cn from "classnames";
 import styled from "styled-components";
-import * as uuid from "uuid/v4";
 
 import { Todo } from "./Todo";
 

@@ -1,10 +1,14 @@
 import * as _ from "lodash";
-import { FileSystemNode } from "./FileSystemNode";
+import { FileSystemNode, FileSystemNodeBasis } from "./FileSystemNode";
+
+export interface DirectoryBasis extends FileSystemNodeBasis {
+  children: FileSystemNode[];
+}
 
 export class Directory extends FileSystemNode {
   children: FileSystemNode[];
 
-  constructor (params) {
+  constructor (params: DirectoryBasis) {
     super(params);
     this.children = [];
 

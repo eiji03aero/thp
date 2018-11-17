@@ -1,12 +1,16 @@
 import { getCurrentTime } from "../utils/date";
 import { Directory } from "./Directory";
 
+export interface FileSystemNodeBasis {
+  name: string;
+}
+
 export class FileSystemNode {
   name: string;
   createdAt: string;
   parent: FileSystemNode;
 
-  constructor (params) {
+  constructor (params: FileSystemNodeBasis) {
     this.name = params.name;
     this.createdAt = getCurrentTime();
   }

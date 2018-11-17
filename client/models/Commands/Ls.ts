@@ -1,14 +1,12 @@
 import * as _ from "lodash";
-import { Command, CommandResult } from "../Command";
-import { FileSystemNode } from "../FileSystemNode";
-// import { TextBasis } from "../Text";
+import { Command, CommandBasis, CommandResult } from "../Command";
 
 export class Ls extends Command {
-  constructor (params) {
+  constructor (params: CommandBasis) {
     super(params);
   }
 
-  static test (input): boolean {
+  static test (input: string): boolean {
     return super.detectCommand('ls', input);
   }
 

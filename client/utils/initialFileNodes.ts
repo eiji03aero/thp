@@ -74,7 +74,7 @@ const shareDirectory = new Directory({
   children: [
     new Directory({
       name: 'picture',
-      child: [
+      children: [
         new TextFile({
           name: 'mamma.png',
           content: 'yes',

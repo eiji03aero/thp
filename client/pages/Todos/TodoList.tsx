@@ -1,8 +1,6 @@
 import * as React from "react";
-import * as cn from "classnames";
 import * as _ from "lodash";
 import styled from "styled-components";
-import * as uuid from "uuid/v4";
 
 import { TodoListItem } from "./TodoListItem";
 import { Todo } from "./Todo";

@@ -3,22 +3,22 @@ import { FileSystemNode } from "../models/FileSystemNode";
 import { Directory } from "../models/Directory";
 
 /* -------------------- Constants -------------------- */
-const SET_CURRENT_DIRECTORY = 'SET_CURRENT_DIRECTORY';
-const SET_ROOT_CHILDREN = 'SET_ROOT_CHILDREN';
+export const SET_CURRENT_DIRECTORY = 'SET_CURRENT_DIRECTORY';
+export const SET_ROOT_CHILDREN = 'SET_ROOT_CHILDREN';
 
 /* -------------------- Actions -------------------- */
 export type FileSystemActions =
   | ReturnType<typeof setCurrentDirectory>
   | ReturnType<typeof setRootChildren>;
 
-export const setCurrentDirectory = (directory) => ({
+export const setCurrentDirectory = (directory: Directory): any => ({
   type: SET_CURRENT_DIRECTORY,
   payload: {
     currentDirectory: directory,
   },
 });
 
-export const setRootChildren = (children) => ({
+export const setRootChildren = (children: FileSystemNode[]): any=> ({
   type: SET_ROOT_CHILDREN,
   payload: {
     children: children,
@@ -43,7 +43,7 @@ const initialState: FileSystemStoreState = {
 
 /* -------------------- Reducers -------------------- */
 
-export const fileSystemReducer = (state = initialState, action) => {
+export const fileSystemReducer = (state: FileSystemStoreState = initialState, action: FileSystemActions) => {
   switch (action.type) {
 
     case SET_CURRENT_DIRECTORY:

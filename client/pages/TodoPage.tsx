@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as _ from "lodash";
 import * as R from "ramda";
-import * as cn from "classnames";
-import styled from "styled-components";
 import * as uuid from "uuid/v4";
-import { Switch, Route, Link } from "react-router-dom";
+import styled from "styled-components";
+import { Switch, Route } from "react-router-dom";
 
 import { TodoList } from "./Todos/TodoList";
 import { Todo } from "./Todos/Todo";

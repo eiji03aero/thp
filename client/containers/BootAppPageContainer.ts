@@ -1,13 +1,14 @@
+import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
+import { RootStoreState } from "../modules";
 import { BootAppPage } from "../pages/BootAppPage";
-import * as actions from "../modules/System";
 
-const mapStateToProps = ({ system }) => ({
+const mapStateToProps = ({ system }: RootStoreState) => ({
   isBooting: system.isBooting,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 export const BootAppPageContainer = connect(

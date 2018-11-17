@@ -1,6 +1,11 @@
 import { Directory } from "./Directory";
 import { MessageBasis } from "./Message";
 
+export interface CommandBasis {
+  input: string;
+  currentDirectory: Directory;
+}
+
 export interface CommandResult {
   status: string;
   messages: MessageBasis[];
@@ -13,7 +18,7 @@ export class Command {
   args: string[];
   currentDirectory: Directory;
 
-  constructor (params) {
+  constructor (params: CommandBasis) {
     this.input = params.input
     this.args = this._parseArgs(params.input);
     this.currentDirectory = params.currentDirectory;
@@ -23,7 +28,7 @@ export class Command {
     return false;
   }
 
-  static detectCommand (name, input): boolean {
+  static detectCommand (name: string, input: string): boolean {
     return input.split(' ')[0] === name;
   }
 
@@ -42,7 +47,7 @@ export class Command {
   }
 
   /* -------------------- Private methods -------------------- */
-  _parseArgs (input): string[] {
+  _parseArgs (input: string): string[] {
     return input.split(' ');
   }
 }

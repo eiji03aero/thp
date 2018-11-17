@@ -4,11 +4,13 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import { App } from "./App";
-import { bootApp } from "./sequences/bootApp";
+import { bootApp } from "./modules/System";
 
-import { createStore } from "./store";
+import { createStore, sagaMiddleware } from "./store";
+import { rootSaga } from "./sagas";
 
 const store = createStore();
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <BrowserRouter>

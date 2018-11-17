@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { colors } from "../utils/colors";
 
 import { HorizontalLoadingIndicator } from "../components/presentationals/common/HorizontalLoadingIndicator";
@@ -49,12 +49,12 @@ interface State {
 export class BootAppPage extends React.Component<Props, State> {
   private container: any;
 
-  constructor (props) {
+  constructor (props: Props) {
     super(props);
     this.container = React.createRef();
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate (prevProps: Props, prevState: State, snapshot: any) {
     if (this.props.isBooting === false) {
       this.container.current.classList.add('fade-down');
       setTimeout(() => this.container.current.classList.add('is-removed'), 500);

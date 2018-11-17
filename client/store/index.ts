@@ -1,14 +1,16 @@
-import { createStore as reduxCreateStore, applyMiddleware } from 'redux';
-import thunk, { ThunkMiddleware} from 'redux-thunk';
+import { createStore as reduxCreateStore, applyMiddleware, Store } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 
-import { rootReducer, RootStoreState, RootActions } from '../modules';
+import { rootReducer } from '../modules';
 
-export const createStore = () => {
+export const sagaMiddleware = createSagaMiddleware();
+
+export const createStore = (): Store => {
   return reduxCreateStore(
     rootReducer,
     applyMiddleware(
-      thunk as ThunkMiddleware<RootStoreState, RootActions>,
+      sagaMiddleware,
       logger,
     )
   );

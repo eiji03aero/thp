@@ -1,9 +1,10 @@
 import * as _ from "lodash";
-import * as R from "ramda";
+
+import { Directory } from "./Directory";
 
 export class FileSystem {
 
-  static resolveNodeFromPath (path, currentDirectory) {
+  static resolveNodeFromPath (path: string, currentDirectory: Directory) {
     let error: any = null;
 
     const fragments = this._parsePathString(path);

@@ -13,7 +13,7 @@ export class Text {
   constructor({
     text,
     color = 'white',
-  }) {
+  }: TextBasis) {
     this.id = uuid();
     this.text = text;
     this.color = color;

@@ -1,14 +1,14 @@
-import * as uuid from 'uuid/v4';
 import { Message } from "../models/Message";
-import { Text, TextBasis } from "../models/Text";
-import { colors } from "../utils/colors";
+import { TextBasis } from "../models/Text";
 
 /* -------------------- Constants -------------------- */
-const UPDATE_PROMPT_STATUS = 'UPDATE_PROMPT_STATUS';
-const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
-const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
-const ADD_MESSAGE = 'ADD_MESSAGE';
-const CLEAR_CURRENT_MESSAGE = 'CLEAR_CURRENT_MESSAGE';
+export const UPDATE_PROMPT_STATUS = 'UPDATE_PROMPT_STATUS';
+export const TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
+export const UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const CLEAR_CURRENT_MESSAGE = 'CLEAR_CURRENT_MESSAGE';
+
+export const SUBMIT_PROMPT = 'SUBMIT_PROMPT';
 
 /* -------------------- Actions -------------------- */
 export type TerminalActions =
@@ -18,7 +18,7 @@ export type TerminalActions =
   | ReturnType<typeof addMessage>
   | ReturnType<typeof clearCurrentMessage>;
 
-export const updatePromptStatus = ({ userName, directoryName }) => ({
+export const updatePromptStatus = ({ userName, directoryName }: { userName: string, directoryName: string }): any => ({
   type: UPDATE_PROMPT_STATUS,
   payload: {
     prompt: [
@@ -30,21 +30,21 @@ export const updatePromptStatus = ({ userName, directoryName }) => ({
   },
 })
 
-export const typeIntoPrompt = currentMessage => ({
+export const typeIntoPrompt = (currentMessage: string): any => ({
   type: TYPE_INTO_PROMPT,
   payload: {
     currentMessage,
   }
 });
 
-export const updatePromptCursorPosition = cursorPosition => ({
+export const updatePromptCursorPosition = (cursorPosition: number): any => ({
   type: UPDATE_PROMPT_CURSOR_POSITION,
   payload: {
     cursorPosition,
   }
 });
 
-export const addMessage = ({ type, texts }) => ({
+export const addMessage = ({ type, texts }: { type: string; texts: TextBasis[]; }): any => ({
   type: ADD_MESSAGE,
   payload: {
     message: new Message({
@@ -54,8 +54,12 @@ export const addMessage = ({ type, texts }) => ({
   },
 });
 
-export const clearCurrentMessage = () => ({
+export const clearCurrentMessage = (): any => ({
   type: CLEAR_CURRENT_MESSAGE,
+});
+
+export const submitPrompt = (): any => ({
+  type: SUBMIT_PROMPT,
 });
 
 /* -------------------- Initial state -------------------- */
@@ -75,7 +79,7 @@ const initialState: TerminalStoreState = {
 
 /* -------------------- Reducers -------------------- */
 
-export const terminalReducer = (state = initialState, action) => {
+export const terminalReducer = (state = initialState, action: TerminalActions) => {
   switch (action.type) {
     case UPDATE_PROMPT_STATUS:
       return { ...state, prompt: action.payload.prompt };

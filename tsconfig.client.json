@@ -1,39 +1,45 @@
 {
   "compilerOptions": {
-    "target": "commonjs",
+    "target": "es2017",
     "module": "commonjs",
     "allowJs": true,
-    // "checkJs": true,
+    "checkJs": true,
     "jsx": "react",
-    // "sourceMap": true,
+    "sourceMap": true,
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
 
     // "strict": true,
-    // "noImplicitAny": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
     // "strictNullChecks": true,
     // "strictFunctionTypes": true,
     // "strictPropertyInitialization": true,
-    // "noImplicitThis": true,
     // "alwaysStrict": true,
 
-    // "noUnusedLocals": true,
     // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
 
     // "moduleResolution": "node",
     // "esModuleInterop": true
 
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules",
+    "public",
+    "scribbles",
+    "server",
+    "webpack.*"
+  ],
   // "include": ["client/**/*"]
 
 
   /* Basic Options */
-  // "lib": [],
   // "declaration": true,                   /* Generates corresponding '.d.ts' file. */
   // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
   // "outFile": "./",                       /* Concatenate and emit output to single file. */
   // "outDir": "./",                        /* Redirect output structure to the directory. */
-  // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
+  "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
   // "composite": true,                     /* Enable project compilation */
   // "removeComments": true,                /* Do not emit comments to output. */
   // "noEmit": true,                        /* Do not emit outputs. */

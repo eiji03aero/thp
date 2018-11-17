@@ -15,7 +15,7 @@ export class Message {
   constructor ({
     type,
     texts,
-  }) {
+  }: MessageBasis) {
     this.id = uuid();
     this.type = type;
     this.texts = this.createTexts(texts);

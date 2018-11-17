@@ -4,7 +4,6 @@ import * as _ from "lodash";
 import { HiddenTextArea } from "../components/HiddenTextArea";
 import { Term, PromptInput, TextLine } from "../components/presentationals/Terminal";
 
-import { Directory } from "../models/Directory";
 import { Message } from "../models/Message";
 import { TextBasis } from "../models/Text";
 
@@ -13,19 +12,21 @@ interface Props {
   currentMessage: string;
   cursorPosition: number;
   messages: Message[];
-  currentDirectory: Directory;
-  userName: string;
 
   onTypeIntoPrompt(message: string): void;
   onUpdatePromptCursorPosition(position: number): void;
   onSubmitPrompt(): void;
 }
 
-export class TerminalPage extends React.Component<Props, {}> {
+interface State {
+
+}
+
+export class TerminalPage extends React.Component<Props, State> {
   private textarea: any;
   private terminal: any;
 
-  constructor (props) {
+  constructor (props: Props) {
     super(props);
     this.textarea = React.createRef<HTMLTextAreaElement>();
     this.terminal = React.createRef<HTMLDivElement>();
@@ -35,20 +36,20 @@ export class TerminalPage extends React.Component<Props, {}> {
     this.textarea.current.focus();
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate (prevProps: Props, prevState: State, snapshot: any) {
     if (this.props.messages.length !== prevProps.messages.length) {
       this.terminal.current.scrollTop = this.terminal.current.scrollHeight;
     }
   }
 
-  handleKeyPress = (e) => {
+  handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.onSubmitPrompt();
     }
   }
 
-  handleKeyUp = (e, { position }) => {
+  handleKeyUp = (e: React.KeyboardEvent, { position }: { position: number }) => {
     this.props.onUpdatePromptCursorPosition(position);
   }
 
@@ -57,16 +58,13 @@ export class TerminalPage extends React.Component<Props, {}> {
     this.props.onTypeIntoPrompt(value);
   }
 
-  handleClickTerm = (e) => {
+  handleClickTerm = (e: React.MouseEvent<HTMLElement>) => {
     this.textarea.current.focus();
   }
 
   render () {
     const {
       prompt, currentMessage, cursorPosition, messages,
-      currentDirectory,
-      userName,
-      onTypeIntoPrompt
     } = this.props;
 
     return (

@@ -1,11 +1,11 @@
-import { Command, CommandResult } from "../Command";
+import { Command, CommandBasis, CommandResult } from "../Command";
 
 export class Pwd extends Command {
-  constructor (params) {
+  constructor (params: CommandBasis) {
     super(params);
   }
 
-  static test (input): boolean {
+  static test (input: string): boolean {
     return super.detectCommand('pwd', input);
   }
 

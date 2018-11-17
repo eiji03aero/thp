@@ -1,7 +1,7 @@
-import { FileSystemNode } from "./FileSystemNode";
+import { FileSystemNode, FileSystemNodeBasis } from "./FileSystemNode";
 
 export class File extends FileSystemNode {
-  constructor (params) {
+  constructor (params: FileSystemNodeBasis) {
     super(params);
   }
 }

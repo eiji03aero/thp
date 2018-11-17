@@ -1,13 +1,11 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
 
 import { TerminalPageContainer } from "./containers/TerminalPageContainer";
 import { BootAppPageContainer } from "./containers/BootAppPageContainer";
-import { NotFoundPage } from "./pages/NotFoundPage";
-
 import { TodoPage } from "./pages/TodoPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 import { GlobalStyle } from './GlobalStyle';
 
@@ -16,7 +14,7 @@ const AppDiv = styled.div`
   height: 100%;
 `;
 
-export const App = props => (
+export const App = () => (
   <AppDiv>
 
     <Switch>

@@ -1,3 +1,3 @@
 import * as moment from "moment";
 
-export const getCurrentTime = () => moment().format();
+export const getCurrentTime = (): string => moment().format();
