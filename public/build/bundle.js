@@ -814,25 +814,85 @@ exports.Pwd = Pwd;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Rm extends Command_1.Command {
     constructor(params) {
         super(params);
     }
     static test(input) {
-        return super.detectCommand('Rm', input);
+        return super.detectCommand('rm', input);
     }
     execute() {
-        return {
-            status: 'success',
-            messages: [
-                {
-                    type: 'system',
-                    texts: [
-                        { text: 'deleted the file' }
+        if (this.args.length < 2) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: '-mash: cd: no destination given' }
+                        ]
+                    }
+                ]
+            };
+        }
+        const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
+        if (error) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: error.message, color: 'red' }
+                        ]
+                    },
+                ],
+            };
+        }
+        if (node.isDirectory()) {
+            const fileToRemove = node.find(data.lastFragment);
+            if (fileToRemove) {
+                node.removeChild(fileToRemove);
+                return {
+                    status: 'success',
+                    messages: [
+                        {
+                            type: 'system',
+                            texts: [
+                                { text: `Removed file: ${fileToRemove.name}` }
+                            ]
+                        }
                     ]
-                }
-            ]
-        };
+                };
+            }
+            else {
+                return {
+                    status: 'error',
+                    messages: [
+                        {
+                            type: 'system',
+                            texts: [
+                                { text: `No such file: ${node.name}`, color: 'red' }
+                            ]
+                        },
+                    ],
+                };
+            }
+        }
+        else {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: `No such file or directory: ${node.name}`, color: 'red' }
+                        ]
+                    }
+                ],
+            };
+        }
     }
 }
 exports.Rm = Rm;

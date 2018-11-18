@@ -2,7 +2,7 @@ import * as _ from "lodash";
 
 import { Directory } from "./Directory";
 
-interface resolveNodeResult { error: any; node: any; data?: any; }
+interface resolveNodeResult { error: any; node: any; data: any; }
 
 export class FileSystem {
 
