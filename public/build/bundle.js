@@ -646,6 +646,89 @@ exports.Ls = Ls;
 
 /***/ }),
 
+/***/ "./client/models/Commands/Mkdir.ts":
+/*!*****************************************!*\
+  !*** ./client/models/Commands/Mkdir.ts ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
+const Directory_1 = __webpack_require__(/*! ../Directory */ "./client/models/Directory.ts");
+class Mkdir extends Command_1.Command {
+    constructor(params) {
+        super(params);
+    }
+    static test(input) {
+        return super.detectCommand('mkdir', input);
+    }
+    execute() {
+        if (this.args.length < 2) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: '-mash: cd: no destination given' }
+                        ]
+                    }
+                ]
+            };
+        }
+        const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
+        if (error) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: error.message, color: 'red' }
+                        ]
+                    },
+                ],
+            };
+        }
+        if (node.isDirectory()) {
+            const directory = new Directory_1.Directory({ name: data.lastFragment });
+            node.addChild(directory);
+            return {
+                status: 'success',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: `Created directory: ${directory.name}` }
+                        ]
+                    }
+                ],
+            };
+        }
+        else {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: `Not a directory: ${node.name}`, color: 'red' }
+                        ]
+                    },
+                ],
+            };
+        }
+    }
+}
+exports.Mkdir = Mkdir;
+
+
+/***/ }),
+
 /***/ "./client/models/Commands/Open.ts":
 /*!****************************************!*\
   !*** ./client/models/Commands/Open.ts ***!
@@ -856,6 +939,7 @@ const Rm_1 = __webpack_require__(/*! ./Rm */ "./client/models/Commands/Rm.ts");
 const Open_1 = __webpack_require__(/*! ./Open */ "./client/models/Commands/Open.ts");
 const Pwd_1 = __webpack_require__(/*! ./Pwd */ "./client/models/Commands/Pwd.ts");
 const Touch_1 = __webpack_require__(/*! ./Touch */ "./client/models/Commands/Touch.ts");
+const Mkdir_1 = __webpack_require__(/*! ./Mkdir */ "./client/models/Commands/Mkdir.ts");
 exports.executeCommand = ({ input, currentDirectory, }) => {
     const commandParams = {
         input: input,
@@ -879,6 +963,8 @@ exports.executeCommand = ({ input, currentDirectory, }) => {
             return new Pwd_1.Pwd(commandParams).execute();
         case Touch_1.Touch.test(input):
             return new Touch_1.Touch(commandParams).execute();
+        case Mkdir_1.Mkdir.test(input):
+            return new Mkdir_1.Mkdir(commandParams).execute();
         default:
             return {
                 status: 'error',

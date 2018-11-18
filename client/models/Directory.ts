@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { FileSystemNode, FileSystemNodeBasis } from "./FileSystemNode";
 
 export interface DirectoryBasis extends FileSystemNodeBasis {
-  children: FileSystemNode[];
+  children?: FileSystemNode[];
 }
 
 export class Directory extends FileSystemNode {

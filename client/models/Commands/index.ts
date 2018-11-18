@@ -5,6 +5,7 @@ import { Rm } from "./Rm";
 import { Open } from "./Open";
 import { Pwd } from "./Pwd";
 import { Touch } from "./Touch";
+import { Mkdir } from "./Mkdir";
 import { CommandResult } from "../Command";
 
 export const executeCommand: ({ input, currentDirectory }: { input: string, currentDirectory: Directory }) => CommandResult = ({
@@ -40,6 +41,9 @@ export const executeCommand: ({ input, currentDirectory }: { input: string, curr
 
     case Touch.test(input):
       return new Touch(commandParams).execute();
+
+    case Mkdir.test(input):
+      return new Mkdir(commandParams).execute();
 
     default:
       return {
