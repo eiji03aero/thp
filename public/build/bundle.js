@@ -551,7 +551,7 @@ class Cd extends Command_1.Command {
     execute() {
         if (this.args.length < 2) {
             return {
-                status: 'success',
+                status: 'error',
                 messages: [
                     {
                         type: 'system',
@@ -768,6 +768,8 @@ exports.Rm = Rm;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
+const TextFile_1 = __webpack_require__(/*! ../Files/TextFile */ "./client/models/Files/TextFile.ts");
 class Touch extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -776,17 +778,61 @@ class Touch extends Command_1.Command {
         return super.detectCommand('touch', input);
     }
     execute() {
-        return {
-            status: 'success',
-            messages: [
-                {
-                    type: 'system',
-                    texts: [
-                        { text: 'created the file' }
-                    ]
-                }
-            ]
-        };
+        if (this.args.length !== 2) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: '-mash: cd: 2arguments must be given' }
+                        ]
+                    }
+                ]
+            };
+        }
+        const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
+        if (error) {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: error.message, color: 'red' }
+                        ]
+                    },
+                ],
+            };
+        }
+        if (node.isDirectory()) {
+            const file = new TextFile_1.TextFile({ name: data.lastFragment, content: '' });
+            node.addChild(file);
+            return {
+                status: 'success',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: `Created file: ${data.lastFragment}` },
+                        ]
+                    }
+                ],
+            };
+        }
+        else {
+            return {
+                status: 'error',
+                messages: [
+                    {
+                        type: 'system',
+                        texts: [
+                            { text: `Not a directory: ${node.name}`, color: 'red' }
+                        ]
+                    },
+                ],
+            };
+        }
     }
 }
 exports.Touch = Touch;
@@ -922,19 +968,23 @@ exports.File = File;
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 class FileSystem {
-    static resolveNodeFromPath(path, currentDirectory) {
+    static resolveNodeFromPath(path, currentDirectory, option = {}) {
         let error = null;
-        const fragments = this._parsePathString(path);
+        let data = {};
         let targetNode = currentDirectory;
-        _.each(fragments, fragment => {
+        let fragments = this.parsePathString(path);
+        if (option.omitLast) {
+            data.lastFragment = fragments.pop();
+        }
+        _.each(fragments, (fragment) => {
             if (_.isNil(targetNode)) {
                 error = { message: `Could not resolve path` };
                 return false;
             }
-            else if (fragment === '..') {
+            else if (fragment === '..' && !(_.isNil(targetNode.parent))) {
                 targetNode = targetNode.parent;
             }
-            else if (targetNode.contains(fragment)) {
+            else if (targetNode.isDirectory() && targetNode.contains(fragment)) {
                 targetNode = targetNode.find(fragment);
             }
             else {
@@ -942,10 +992,10 @@ class FileSystem {
                 return false;
             }
         });
-        return { error: error, node: targetNode };
+        return { error: error, node: targetNode, data: data };
     }
     /* -------------------- Private methods -------------------- */
-    static _parsePathString(pathString) {
+    static parsePathString(pathString) {
         return pathString.split('/').filter(node => node !== "");
     }
 }

@@ -13,7 +13,7 @@ export class Cd extends Command {
   execute (): CommandResult {
     if (this.args.length < 2) {
       return {
-        status: 'success',
+        status: 'error',
         messages: [
           {
             type: 'system',
