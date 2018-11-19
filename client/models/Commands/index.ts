@@ -1,4 +1,3 @@
-import { Directory } from "../Directory";
 import { Cd } from "./Cd";
 import { Ls } from "./Ls";
 import { Rm } from "./Rm";
@@ -6,23 +5,22 @@ import { Open } from "./Open";
 import { Pwd } from "./Pwd";
 import { Touch } from "./Touch";
 import { Mkdir } from "./Mkdir";
-import { CommandResult } from "../Command";
+import { Directory } from "../Directory";
+import { CommandResult } from "../CommandResult";
 
-export const executeCommand: ({ input, currentDirectory }: { input: string, currentDirectory: Directory }) => CommandResult = ({
-  input,
-  currentDirectory,
-}) => {
+export const executeCommand = (params: {
+  input: string;
+  currentDirectory: Directory;
+}): CommandResult => {
+  const { input, currentDirectory } = params;
   const commandParams = {
     input: input,
     currentDirectory: currentDirectory,
   };
 
   switch (true) {
-    case input === '':
-      return {
-        status: 'noCommand',
-        messages: [],
-      };
+    case params.input === '':
+      return CommandResult.success([]);
 
     case Cd.test(input):
       return new Cd(commandParams).execute();
@@ -46,16 +44,8 @@ export const executeCommand: ({ input, currentDirectory }: { input: string, curr
       return new Mkdir(commandParams).execute();
 
     default:
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `-mash: ${input.split(' ')[0]}: command not found` }
-            ]
-          }
-        ]
-      }
+      return CommandResult.error([
+        `-mash: ${input.split(' ')[0]}: command not found`
+      ]);
   }
 }

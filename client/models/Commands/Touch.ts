@@ -1,4 +1,5 @@
-import { Command, CommandBasis, CommandResult } from "../Command";
+import { Command, CommandBasis } from "../Command";
+import { CommandResult } from "../CommandResult";
 import { FileSystem } from "../FileSystem";
 import { TextFile } from "../Files/TextFile";
 
@@ -12,62 +13,26 @@ export class Touch extends Command {
   }
 
   execute (): CommandResult {
-    if (this.args.length !== 2) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: '-mash: cd: 2arguments must be given' }
-            ]
-          }
-        ]
-      };
+    if (this.args.length < 2) {
+      return CommandResult.commandError(this, `No destination given`);
     }
 
     const { error, node, data } = FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
 
     if (error) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: error.message, color: 'red' }
-            ]
-          },
-        ],
-      };
+      return CommandResult.commandError(this, error.message);
     }
 
     if (node.isDirectory()) {
       const file = new TextFile({ name: data.lastFragment, content: '' });
       node.addChild(file);
-      return {
-        status: 'success',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `Created file: ${data.lastFragment}` },
-            ]
-          }
-        ],
-      };
+      return CommandResult.success([
+        `Created file: ${data.lastFragment}` 
+      ]);
     } else {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `Not a directory: ${node.name}`, color: 'red' }
-            ]
-          },
-        ],
-      };
+      return CommandResult.error([
+        `Not a directory: ${node.name}`
+      ]);
     }
   }
 }

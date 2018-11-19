@@ -494,10 +494,11 @@ store.dispatch(System_1.bootApp());
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+const CommandResult_1 = __webpack_require__(/*! ./CommandResult */ "./client/models/CommandResult.ts");
 class Command {
     constructor(params) {
         this.input = params.input;
-        this.args = this._parseArgs(params.input);
+        this.args = this.parseArgs(params.input);
         this.currentDirectory = params.currentDirectory;
     }
     static test(input) {
@@ -506,25 +507,88 @@ class Command {
     static detectCommand(name, input) {
         return input.split(' ')[0] === name;
     }
+    get typeName() {
+        return this.constructor.name.toLowerCase();
+    }
     execute() {
-        return {
-            status: 'success',
-            messages: [
-                {
-                    type: 'system',
-                    texts: [
-                        { text: 'system desu' }
-                    ]
-                }
-            ]
-        };
+        return CommandResult_1.CommandResult.success([
+            'System desu'
+        ]);
     }
     /* -------------------- Private methods -------------------- */
-    _parseArgs(input) {
-        return input.split(' ');
+    parseArgs(input) {
+        return input.split(' ').filter(arg => arg !== '');
     }
 }
 exports.Command = Command;
+
+
+/***/ }),
+
+/***/ "./client/models/CommandResult.ts":
+/*!****************************************!*\
+  !*** ./client/models/CommandResult.ts ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class CommandResult {
+    constructor(params) {
+        this.status = params.status;
+        this.messages = params.messages;
+        this.moveTo = params.moveTo;
+    }
+    static success(strings, moveTo) {
+        const messages = _.map(strings, (str) => ({
+            type: 'system',
+            texts: [{ text: str }],
+        }));
+        return new CommandResult({ status: 'success', messages: messages, moveTo: moveTo });
+    }
+    static error(strings) {
+        const messages = _.map(strings, (str) => ({
+            type: 'system',
+            texts: [{ text: str, color: 'red' }]
+        }));
+        return new CommandResult({ status: 'error', messages: messages });
+    }
+    static commandError(command, text) {
+        const commandName = command.typeName;
+        const messages = [
+            {
+                type: 'system',
+                texts: [{ text: `-mash: ${commandName}: ${text}`, color: 'red' }]
+            }
+        ];
+        return new CommandResult({ status: 'error', messages: messages });
+    }
+    static noSuchFileOrDirectory(nodeName) {
+        return new CommandResult({
+            status: 'error',
+            messages: [
+                {
+                    type: 'system',
+                    texts: [{ text: `-mash: No such file or directory: ${nodeName}`, color: 'red' }]
+                }
+            ]
+        });
+    }
+    static notDirectory(nodeName) {
+        return new CommandResult({
+            status: 'error',
+            messages: [
+                {
+                    type: 'system',
+                    texts: [{ text: `-mash: Not a directory: ${nodeName}`, color: 'red' }]
+                }
+            ]
+        });
+    }
+}
+exports.CommandResult = CommandResult;
 
 
 /***/ }),
@@ -540,6 +604,7 @@ exports.Command = Command;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Cd extends Command_1.Command {
     constructor(params) {
@@ -550,51 +615,17 @@ class Cd extends Command_1.Command {
     }
     execute() {
         if (this.args.length < 2) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: '-mash: cd: no destination given' }
-                        ]
-                    }
-                ]
-            };
+            return CommandResult_1.CommandResult.commandError(this, `No destination given`);
         }
         const { error, node } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory);
         if (error) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: error.message, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.commandError(this, error.message);
         }
         if (node.isDirectory()) {
-            return {
-                status: 'success',
-                moveTo: node,
-                messages: [],
-            };
+            return CommandResult_1.CommandResult.success([], node);
         }
         else {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `Not a directory: ${node.name}`, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.notDirectory(node.name);
         }
     }
 }
@@ -615,6 +646,7 @@ exports.Cd = Cd;
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 class Ls extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -630,7 +662,7 @@ class Ls extends Command_1.Command {
             color: child.isDirectory() ? 'blue' : 'white',
             text: _.padEnd(child.name, paddedNameLength),
         }));
-        return {
+        return new CommandResult_1.CommandResult({
             status: 'success',
             messages: [
                 {
@@ -638,7 +670,7 @@ class Ls extends Command_1.Command {
                     texts: childNameList
                 }
             ]
-        };
+        });
     }
 }
 exports.Ls = Ls;
@@ -657,6 +689,7 @@ exports.Ls = Ls;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 const Directory_1 = __webpack_require__(/*! ../Directory */ "./client/models/Directory.ts");
 class Mkdir extends Command_1.Command {
@@ -668,59 +701,21 @@ class Mkdir extends Command_1.Command {
     }
     execute() {
         if (this.args.length < 2) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: '-mash: cd: no destination given' }
-                        ]
-                    }
-                ]
-            };
+            return CommandResult_1.CommandResult.commandError(this, `No destination given`);
         }
         const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
         if (error) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: error.message, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.commandError(this, error.message);
         }
         if (node.isDirectory()) {
             const directory = new Directory_1.Directory({ name: data.lastFragment });
             node.addChild(directory);
-            return {
-                status: 'success',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `Created directory: ${directory.name}` }
-                        ]
-                    }
-                ],
-            };
+            return CommandResult_1.CommandResult.success([
+                `Created directory: ${directory.name}`
+            ]);
         }
         else {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `Not a directory: ${node.name}`, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.notDirectory(node.name);
         }
     }
 }
@@ -740,6 +735,7 @@ exports.Mkdir = Mkdir;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 class Open extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -748,17 +744,9 @@ class Open extends Command_1.Command {
         return super.detectCommand('open', input);
     }
     execute() {
-        return {
-            status: 'success',
-            messages: [
-                {
-                    type: 'system',
-                    texts: [
-                        { text: 'opend the file!' }
-                    ]
-                }
-            ]
-        };
+        return CommandResult_1.CommandResult.success([
+            'opened the file!',
+        ]);
     }
 }
 exports.Open = Open;
@@ -777,6 +765,7 @@ exports.Open = Open;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 class Pwd extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -785,17 +774,9 @@ class Pwd extends Command_1.Command {
         return super.detectCommand('pwd', input);
     }
     execute() {
-        return {
-            status: 'success',
-            messages: [
-                {
-                    type: 'system',
-                    texts: [
-                        { text: '/home/hoge/korekore' }
-                    ]
-                }
-            ]
-        };
+        return CommandResult_1.CommandResult.success([
+            '/home/hoge/korekore'
+        ]);
     }
 }
 exports.Pwd = Pwd;
@@ -814,6 +795,7 @@ exports.Pwd = Pwd;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Rm extends Command_1.Command {
     constructor(params) {
@@ -824,74 +806,30 @@ class Rm extends Command_1.Command {
     }
     execute() {
         if (this.args.length < 2) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: '-mash: cd: no destination given' }
-                        ]
-                    }
-                ]
-            };
+            return CommandResult_1.CommandResult.commandError(this, `No destination given`);
         }
         const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
         if (error) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: error.message, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.commandError(this, error.message);
         }
         if (node.isDirectory()) {
             const fileToRemove = node.find(data.lastFragment);
             if (fileToRemove) {
                 node.removeChild(fileToRemove);
-                return {
-                    status: 'success',
-                    messages: [
-                        {
-                            type: 'system',
-                            texts: [
-                                { text: `Removed file: ${fileToRemove.name}` }
-                            ]
-                        }
-                    ]
-                };
+                return CommandResult_1.CommandResult.success([
+                    `Removed file: ${fileToRemove.name}`
+                ]);
             }
             else {
-                return {
-                    status: 'error',
-                    messages: [
-                        {
-                            type: 'system',
-                            texts: [
-                                { text: `No such file: ${node.name}`, color: 'red' }
-                            ]
-                        },
-                    ],
-                };
+                return CommandResult_1.CommandResult.error([
+                    `No such file: ${node.name}`
+                ]);
             }
         }
         else {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `No such file or directory: ${node.name}`, color: 'red' }
-                        ]
-                    }
-                ],
-            };
+            return CommandResult_1.CommandResult.error([
+                `Directory was designated: ${node.name}`
+            ]);
         }
     }
 }
@@ -911,6 +849,7 @@ exports.Rm = Rm;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
 const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 const TextFile_1 = __webpack_require__(/*! ../Files/TextFile */ "./client/models/Files/TextFile.ts");
 class Touch extends Command_1.Command {
@@ -921,60 +860,24 @@ class Touch extends Command_1.Command {
         return super.detectCommand('touch', input);
     }
     execute() {
-        if (this.args.length !== 2) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: '-mash: cd: 2arguments must be given' }
-                        ]
-                    }
-                ]
-            };
+        if (this.args.length < 2) {
+            return CommandResult_1.CommandResult.commandError(this, `No destination given`);
         }
         const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
         if (error) {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: error.message, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.commandError(this, error.message);
         }
         if (node.isDirectory()) {
             const file = new TextFile_1.TextFile({ name: data.lastFragment, content: '' });
             node.addChild(file);
-            return {
-                status: 'success',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `Created file: ${data.lastFragment}` },
-                        ]
-                    }
-                ],
-            };
+            return CommandResult_1.CommandResult.success([
+                `Created file: ${data.lastFragment}`
+            ]);
         }
         else {
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `Not a directory: ${node.name}`, color: 'red' }
-                        ]
-                    },
-                ],
-            };
+            return CommandResult_1.CommandResult.error([
+                `Not a directory: ${node.name}`
+            ]);
         }
     }
 }
@@ -1000,17 +903,16 @@ const Open_1 = __webpack_require__(/*! ./Open */ "./client/models/Commands/Open.
 const Pwd_1 = __webpack_require__(/*! ./Pwd */ "./client/models/Commands/Pwd.ts");
 const Touch_1 = __webpack_require__(/*! ./Touch */ "./client/models/Commands/Touch.ts");
 const Mkdir_1 = __webpack_require__(/*! ./Mkdir */ "./client/models/Commands/Mkdir.ts");
-exports.executeCommand = ({ input, currentDirectory, }) => {
+const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
+exports.executeCommand = (params) => {
+    const { input, currentDirectory } = params;
     const commandParams = {
         input: input,
         currentDirectory: currentDirectory,
     };
     switch (true) {
-        case input === '':
-            return {
-                status: 'noCommand',
-                messages: [],
-            };
+        case params.input === '':
+            return CommandResult_1.CommandResult.success([]);
         case Cd_1.Cd.test(input):
             return new Cd_1.Cd(commandParams).execute();
         case Ls_1.Ls.test(input):
@@ -1026,17 +928,9 @@ exports.executeCommand = ({ input, currentDirectory, }) => {
         case Mkdir_1.Mkdir.test(input):
             return new Mkdir_1.Mkdir(commandParams).execute();
         default:
-            return {
-                status: 'error',
-                messages: [
-                    {
-                        type: 'system',
-                        texts: [
-                            { text: `-mash: ${input.split(' ')[0]}: command not found` }
-                        ]
-                    }
-                ]
-            };
+            return CommandResult_1.CommandResult.error([
+                `-mash: ${input.split(' ')[0]}: command not found`
+            ]);
     }
 };
 

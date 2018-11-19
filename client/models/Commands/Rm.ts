@@ -1,4 +1,5 @@
-import { Command, CommandBasis, CommandResult } from "../Command";
+import { Command, CommandBasis } from "../Command";
+import { CommandResult } from "../CommandResult";
 import { FileSystem } from "../FileSystem";
 
 export class Rm extends Command {
@@ -12,33 +13,13 @@ export class Rm extends Command {
 
   execute (): CommandResult {
     if (this.args.length < 2) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: '-mash: cd: no destination given' }
-            ]
-          }
-        ]
-      };
+      return CommandResult.commandError(this, `No destination given`);
     }
 
     const { error, node, data } = FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
 
     if (error) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: error.message, color: 'red' }
-            ]
-          },
-        ],
-      };
+      return CommandResult.commandError(this, error.message);
     }
 
     if (node.isDirectory()) {
@@ -46,42 +27,18 @@ export class Rm extends Command {
 
       if (fileToRemove) {
         node.removeChild(fileToRemove);
-        return {
-          status: 'success',
-          messages: [
-            {
-              type: 'system',
-              texts: [
-                { text: `Removed file: ${fileToRemove.name}` }
-              ]
-            }
-          ]
-        }
+        return CommandResult.success([
+          `Removed file: ${fileToRemove.name}`
+        ]);
       } else {
-        return {
-          status: 'error',
-          messages: [
-            {
-              type: 'system',
-              texts: [
-                { text: `No such file: ${node.name}`, color: 'red' }
-              ]
-            },
-          ],
-        };
+        return CommandResult.error([
+          `No such file: ${node.name}`
+        ]);
       }
     } else {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `No such file or directory: ${node.name}`, color: 'red' }
-            ]
-          }
-        ],
-      }
+      return CommandResult.error([
+        `Directory was designated: ${node.name}`
+      ]);
     }
   }
 }

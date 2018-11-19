@@ -1,4 +1,5 @@
-import { Command, CommandBasis, CommandResult } from "../Command";
+import { Command, CommandBasis } from "../Command";
+import { CommandResult } from "../CommandResult";
 
 export class Pwd extends Command {
   constructor (params: CommandBasis) {
@@ -10,16 +11,8 @@ export class Pwd extends Command {
   }
 
   execute (): CommandResult {
-    return {
-      status: 'success',
-      messages: [
-        {
-          type: 'system',
-          texts: [
-            { text: '/home/hoge/korekore' }
-          ]
-        }
-      ]
-    };
+    return CommandResult.success([
+      '/home/hoge/korekore'
+    ]);
   }
 }

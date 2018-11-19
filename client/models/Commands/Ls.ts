@@ -1,5 +1,6 @@
 import * as _ from "lodash";
-import { Command, CommandBasis, CommandResult } from "../Command";
+import { Command, CommandBasis } from "../Command";
+import { CommandResult } from "../CommandResult";
 
 export class Ls extends Command {
   constructor (params: CommandBasis) {
@@ -19,7 +20,7 @@ export class Ls extends Command {
       text: _.padEnd(child.name, paddedNameLength),
     }));
 
-    return {
+    return new CommandResult({
       status: 'success',
       messages: [
         {
@@ -27,6 +28,6 @@ export class Ls extends Command {
           texts: childNameList
         }
       ]
-    };
+    });
   }
 }

@@ -1,4 +1,5 @@
-import { Command, CommandBasis, CommandResult } from "../Command";
+import { Command, CommandBasis } from "../Command";
+import { CommandResult } from "../CommandResult";
 import { FileSystem } from "../FileSystem";
 import { Directory } from "../Directory";
 
@@ -13,61 +14,23 @@ export class Mkdir extends Command {
 
   execute (): CommandResult {
     if (this.args.length < 2) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: '-mash: cd: no destination given' }
-            ]
-          }
-        ]
-      };
+      return CommandResult.commandError(this, `No destination given`);
     }
 
     const { error, node, data } = FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory, { omitLast: true });
 
     if (error) {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: error.message, color: 'red' }
-            ]
-          },
-        ],
-      };
+      return CommandResult.commandError(this, error.message);
     }
 
     if (node.isDirectory()) {
       const directory = new Directory({ name: data.lastFragment });
       node.addChild(directory);
-      return {
-        status: 'success',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `Created directory: ${directory.name}` }
-            ]
-          }
-        ],
-      }
+      return CommandResult.success([
+        `Created directory: ${directory.name}`
+      ]);
     } else {
-      return {
-        status: 'error',
-        messages: [
-          {
-            type: 'system',
-            texts: [
-              { text: `Not a directory: ${node.name}`, color: 'red' }
-            ]
-          },
-        ],
-      };
+      return CommandResult.notDirectory(node.name);
     }
   }
 }

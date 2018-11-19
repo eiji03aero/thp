@@ -1,15 +1,9 @@
+import { CommandResult } from "./CommandResult";
 import { Directory } from "./Directory";
-import { MessageBasis } from "./Message";
 
 export interface CommandBasis {
   input: string;
   currentDirectory: Directory;
-}
-
-export interface CommandResult {
-  status: string;
-  messages: MessageBasis[];
-  moveTo?: Directory;
 }
 
 export class Command {
@@ -20,7 +14,7 @@ export class Command {
 
   constructor (params: CommandBasis) {
     this.input = params.input
-    this.args = this._parseArgs(params.input);
+    this.args = this.parseArgs(params.input);
     this.currentDirectory = params.currentDirectory;
   }
 
@@ -32,22 +26,18 @@ export class Command {
     return input.split(' ')[0] === name;
   }
 
+  get typeName (): string {
+    return this.constructor.name.toLowerCase();
+  }
+
   execute (): CommandResult {
-    return {
-      status: 'success',
-      messages: [
-        {
-          type: 'system',
-          texts: [
-            { text: 'system desu' }
-          ]
-        }
-      ]
-    }
+    return CommandResult.success([
+      'System desu'
+    ]);
   }
 
   /* -------------------- Private methods -------------------- */
-  _parseArgs (input: string): string[] {
-    return input.split(' ');
+  private parseArgs (input: string): string[] {
+    return input.split(' ').filter(arg => arg !== '');
   }
 }
