@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Command } from "./Command";
 import { MessageBasis } from "./Message";
 import { Directory } from "./Directory";

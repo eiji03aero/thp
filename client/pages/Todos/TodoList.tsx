@@ -21,8 +21,9 @@ export const TodoList: React.StatelessComponent<Props> = ({
   return (
     <TodoListDiv>
 
-      { _.map(todos, todo => (
+      { _.map(todos, (todo, idx) => (
         <TodoListItem
+          key={idx}
           todo={todo}
           onToggleCompleted={onToggleCompleted}
         />
