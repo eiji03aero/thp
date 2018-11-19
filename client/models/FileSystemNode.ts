@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { getCurrentTime } from "../utils/date";
 import { Directory } from "./Directory";
 
@@ -15,6 +16,7 @@ export class FileSystemNode {
     this.createdAt = getCurrentTime();
   }
 
-  // mock usage. should be chagned to instanceOf Directory later
   isDirectory (): boolean { return this instanceof Directory; }
+
+  isRoot (): boolean { return _.isNil(this.parent); }
 }

@@ -1,5 +1,6 @@
 import { Command, CommandBasis } from "../Command";
 import { CommandResult } from "../CommandResult";
+import { FileSystem } from "../FileSystem";
 
 export class Pwd extends Command {
   constructor (params: CommandBasis) {
@@ -11,8 +12,9 @@ export class Pwd extends Command {
   }
 
   execute (): CommandResult {
+    const currentWorkingDirectory = FileSystem.getAbsoluteNodePath(this.currentDirectory);
     return CommandResult.success([
-      '/home/hoge/korekore'
+      currentWorkingDirectory
     ]);
   }
 }

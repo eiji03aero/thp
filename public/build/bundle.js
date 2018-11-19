@@ -766,6 +766,7 @@ exports.Open = Open;
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
 const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Pwd extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -774,8 +775,9 @@ class Pwd extends Command_1.Command {
         return super.detectCommand('pwd', input);
     }
     execute() {
+        const currentWorkingDirectory = FileSystem_1.FileSystem.getAbsoluteNodePath(this.currentDirectory);
         return CommandResult_1.CommandResult.success([
-            '/home/hoge/korekore'
+            currentWorkingDirectory
         ]);
     }
 }
@@ -1021,8 +1023,14 @@ class FileSystem {
                 error = { message: `Could not resolve path` };
                 return false;
             }
-            else if (fragment === '..' && !(_.isNil(targetNode.parent))) {
-                targetNode = targetNode.parent;
+            else if (fragment === '..' && !targetNode.isRoot()) {
+                if (targetNode.isRoot()) {
+                    error = { message: 'Could not resolve path' };
+                    return false;
+                }
+                else {
+                    targetNode = targetNode.parent;
+                }
             }
             else if (targetNode.isDirectory() && targetNode.contains(fragment)) {
                 targetNode = targetNode.find(fragment);
@@ -1033,6 +1041,18 @@ class FileSystem {
             }
         });
         return { error: error, node: targetNode, data: data };
+    }
+    static getAbsoluteNodePath(node) {
+        let targetNode = node;
+        let nodes = [];
+        while (!targetNode.isRoot()) {
+            nodes = [targetNode, ...nodes];
+            targetNode = targetNode.parent;
+            if (targetNode.isRoot())
+                break;
+        }
+        const nodeNames = _.map(nodes, (node) => node.name);
+        return targetNode.name + nodeNames.join('/');
     }
     /* -------------------- Private methods -------------------- */
     static parsePathString(pathString) {
@@ -1054,6 +1074,7 @@ exports.FileSystem = FileSystem;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const date_1 = __webpack_require__(/*! ../utils/date */ "./client/utils/date.ts");
 const Directory_1 = __webpack_require__(/*! ./Directory */ "./client/models/Directory.ts");
 class FileSystemNode {
@@ -1061,8 +1082,8 @@ class FileSystemNode {
         this.name = params.name;
         this.createdAt = date_1.getCurrentTime();
     }
-    // mock usage. should be chagned to instanceOf Directory later
     isDirectory() { return this instanceof Directory_1.Directory; }
+    isRoot() { return _.isNil(this.parent); }
 }
 exports.FileSystemNode = FileSystemNode;
 
@@ -1191,7 +1212,7 @@ exports.setRootChildren = (children) => ({
 });
 /* -------------------- Initial state -------------------- */
 const rootDirectory = new Directory_1.Directory({
-    name: 'root',
+    name: '/',
     children: []
 });
 const initialState = {
@@ -1688,6 +1709,7 @@ const systemActions = __webpack_require__(/*! ../modules/System */ "./client/mod
 const fileSystemActions = __webpack_require__(/*! ../modules/FileSystem */ "./client/modules/FileSystem.ts");
 const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const initialFileNodes_1 = __webpack_require__(/*! ../utils/initialFileNodes */ "./client/utils/initialFileNodes.ts");
+const FileSystem_1 = __webpack_require__(/*! ../models/FileSystem */ "./client/models/FileSystem.ts");
 function* watchBootApp() {
     yield effects_1.takeEvery(System_1.BOOT_APP, bootApp);
 }
@@ -1700,6 +1722,8 @@ function* bootApp() {
     yield effects_1.put(terminalActions.updatePromptStatus({
         userName: userName, directoryName: initialFileNodes_1.homeDirectory.name
     }));
+    const applicationsDir = initialFileNodes_1.homeDirectory.find('applications');
+    console.log(FileSystem_1.FileSystem.getAbsoluteNodePath(applicationsDir));
     yield redux_saga_1.delay(4000);
     yield effects_1.put(systemActions.completeBootApp());
     yield effects_1.put(terminalActions.addMessage({

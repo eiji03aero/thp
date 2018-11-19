@@ -27,7 +27,7 @@ export const setRootChildren = (children: FileSystemNode[]): any=> ({
 
 /* -------------------- Initial state -------------------- */
 const rootDirectory = new Directory({
-  name: 'root',
+  name: '/',
   children: []
 });
 
