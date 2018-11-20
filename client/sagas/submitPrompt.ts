@@ -36,8 +36,12 @@ function* submitPrompt () {
     yield put(terminalActions.addMessage(message));
   }
 
-  if (result.moveTo) {
-    yield put(fileSystemActions.setCurrentDirectory(result.moveTo));
-    yield put(terminalActions.updatePromptStatus({ userName, directoryName: result.moveTo.name }));
+  if (result.data.navigateTo) {
+    console.log('navigate: ', result.data.navigateTo);
+  }
+
+  if (result.data.moveTo) {
+    yield put(fileSystemActions.setCurrentDirectory(result.data.moveTo));
+    yield put(terminalActions.updatePromptStatus({ userName, directoryName: result.data.moveTo.name }));
   }
 };

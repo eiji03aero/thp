@@ -23,7 +23,7 @@ export class Cd extends Command {
     }
 
     if (node.isDirectory()) {
-      return CommandResult.success([], node);
+      return CommandResult.success([], { moveTo: node });
     } else {
       return CommandResult.notDirectory(node.name);
     }

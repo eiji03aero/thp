@@ -3,29 +3,34 @@ import { Command } from "./Command";
 import { MessageBasis } from "./Message";
 import { Directory } from "./Directory";
 
+interface CommandResultBasisOptional {
+  moveTo?: Directory;
+  navigateTo?: string;
+}
+
 export interface CommandResultBasis {
   status: string;
   messages: MessageBasis[];
-  moveTo?: Directory;
+  data?: CommandResultBasisOptional;
 }
 
 export class CommandResult {
   status: string;
   messages: MessageBasis[];
-  moveTo: Directory
+  data: CommandResultBasisOptional;
 
   constructor (params: CommandResultBasis) {
     this.status = params.status;
     this.messages = params.messages;
-    this.moveTo = params.moveTo;
+    this.data = params.data || {};
   }
 
-  static success (strings: string[], moveTo?: Directory): CommandResult {
+  static success (strings: string[], data?: CommandResultBasisOptional): CommandResult {
     const messages = _.map(strings, (str: string) => ({
       type: 'system',
       texts: [ { text: str } ],
     }));
-    return new CommandResult({ status: 'success', messages: messages, moveTo: moveTo });
+    return new CommandResult({ status: 'success', messages: messages, data: data });
   }
 
   static error (strings: string[]): CommandResult {

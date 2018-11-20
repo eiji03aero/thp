@@ -105,13 +105,16 @@ const TodoPage_1 = __webpack_require__(/*! ./pages/TodoPage */ "./client/pages/T
 const NotFoundPage_1 = __webpack_require__(/*! ./pages/NotFoundPage */ "./client/pages/NotFoundPage.tsx");
 const GlobalStyle_1 = __webpack_require__(/*! ./GlobalStyle */ "./client/GlobalStyle.ts");
 const AppDiv = styled_components_1.default.div `
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 `;
 exports.App = () => (React.createElement(AppDiv, null,
     React.createElement(react_router_dom_1.Switch, null,
-        React.createElement(react_router_dom_1.Route, { exact: true, path: '/', component: TerminalPageContainer_1.TerminalPageContainer }),
-        React.createElement(react_router_dom_1.Route, { path: '/todos', component: TodoPage_1.TodoPage }),
+        React.createElement(react_router_dom_1.Route, { path: '/todos', component: TodoPage_1.TodoPage })),
+    React.createElement(react_router_dom_1.Switch, null,
+        React.createElement(react_router_dom_1.Route, { path: '/', component: TerminalPageContainer_1.TerminalPageContainer }),
         React.createElement(react_router_dom_1.Route, { component: NotFoundPage_1.NotFoundPage })),
     React.createElement(BootAppPageContainer_1.BootAppPageContainer, null),
     React.createElement(GlobalStyle_1.GlobalStyle, null)));
@@ -141,6 +144,7 @@ exports.GlobalStyle = styled_components_1.createGlobalStyle `
     height: 100%;
     margin: 0;
     box-sizing: border-box;
+    background-color: ${colors_1.colors.black};
   }
 
   * {
@@ -150,7 +154,6 @@ exports.GlobalStyle = styled_components_1.createGlobalStyle `
   #app-root {
     width: 100%;
     height: 100%;
-    background-color: ${colors_1.colors.black};
   }
 `;
 
@@ -202,10 +205,10 @@ exports.HiddenTextArea = HiddenTextArea;
 
 /***/ }),
 
-/***/ "./client/components/presentationals/Terminal/PromptInput.tsx":
-/*!********************************************************************!*\
-  !*** ./client/components/presentationals/Terminal/PromptInput.tsx ***!
-  \********************************************************************/
+/***/ "./client/components/sfcs/Terminal/PromptInput.tsx":
+/*!*********************************************************!*\
+  !*** ./client/components/sfcs/Terminal/PromptInput.tsx ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -266,10 +269,10 @@ exports.PromptInput = ({ text, cursorPosition, }) => {
 
 /***/ }),
 
-/***/ "./client/components/presentationals/Terminal/Term.tsx":
-/*!*************************************************************!*\
-  !*** ./client/components/presentationals/Terminal/Term.tsx ***!
-  \*************************************************************/
+/***/ "./client/components/sfcs/Terminal/Term.tsx":
+/*!**************************************************!*\
+  !*** ./client/components/sfcs/Terminal/Term.tsx ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -280,8 +283,8 @@ const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 const colors_1 = __webpack_require__(/*! ../../../utils/colors */ "./client/utils/colors.ts");
 const TermDiv = styled_components_1.default.div `
+  flex: 1;
   width: 100%;
-  height: 100%;
   background-color: ${colors_1.colors.deepGreen};
   color: white;
   overflow-y: scroll;
@@ -293,10 +296,10 @@ exports.Term = React.forwardRef(({ children, onClick, }, ref) => {
 
 /***/ }),
 
-/***/ "./client/components/presentationals/Terminal/TextLine.tsx":
-/*!*****************************************************************!*\
-  !*** ./client/components/presentationals/Terminal/TextLine.tsx ***!
-  \*****************************************************************/
+/***/ "./client/components/sfcs/Terminal/TextLine.tsx":
+/*!******************************************************!*\
+  !*** ./client/components/sfcs/Terminal/TextLine.tsx ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -322,30 +325,48 @@ exports.TextLine = ({ children, message, }) => {
 
 /***/ }),
 
-/***/ "./client/components/presentationals/Terminal/index.ts":
-/*!*************************************************************!*\
-  !*** ./client/components/presentationals/Terminal/index.ts ***!
-  \*************************************************************/
+/***/ "./client/components/sfcs/Terminal/index.ts":
+/*!**************************************************!*\
+  !*** ./client/components/sfcs/Terminal/index.ts ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var PromptInput_1 = __webpack_require__(/*! ./PromptInput */ "./client/components/presentationals/Terminal/PromptInput.tsx");
+var PromptInput_1 = __webpack_require__(/*! ./PromptInput */ "./client/components/sfcs/Terminal/PromptInput.tsx");
 exports.PromptInput = PromptInput_1.PromptInput;
-var Term_1 = __webpack_require__(/*! ./Term */ "./client/components/presentationals/Terminal/Term.tsx");
+var Term_1 = __webpack_require__(/*! ./Term */ "./client/components/sfcs/Terminal/Term.tsx");
 exports.Term = Term_1.Term;
-var TextLine_1 = __webpack_require__(/*! ./TextLine */ "./client/components/presentationals/Terminal/TextLine.tsx");
+var TextLine_1 = __webpack_require__(/*! ./TextLine */ "./client/components/sfcs/Terminal/TextLine.tsx");
 exports.TextLine = TextLine_1.TextLine;
 
 
 /***/ }),
 
-/***/ "./client/components/presentationals/common/HorizontalLoadingIndicator.tsx":
-/*!*********************************************************************************!*\
-  !*** ./client/components/presentationals/common/HorizontalLoadingIndicator.tsx ***!
-  \*********************************************************************************/
+/***/ "./client/components/sfcs/Web/WebPageDiv.tsx":
+/*!***************************************************!*\
+  !*** ./client/components/sfcs/Web/WebPageDiv.tsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+exports.WebPageDiv = styled_components_1.default.div `
+  flex: 3;
+`;
+
+
+/***/ }),
+
+/***/ "./client/components/sfcs/common/HorizontalLoadingIndicator.tsx":
+/*!**********************************************************************!*\
+  !*** ./client/components/sfcs/common/HorizontalLoadingIndicator.tsx ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -535,18 +556,19 @@ exports.Command = Command;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 class CommandResult {
     constructor(params) {
         this.status = params.status;
         this.messages = params.messages;
-        this.moveTo = params.moveTo;
+        this.data = params.data || {};
     }
-    static success(strings, moveTo) {
+    static success(strings, data) {
         const messages = _.map(strings, (str) => ({
             type: 'system',
             texts: [{ text: str }],
         }));
-        return new CommandResult({ status: 'success', messages: messages, moveTo: moveTo });
+        return new CommandResult({ status: 'success', messages: messages, data: data });
     }
     static error(strings) {
         const messages = _.map(strings, (str) => ({
@@ -622,7 +644,7 @@ class Cd extends Command_1.Command {
             return CommandResult_1.CommandResult.commandError(this, error.message);
         }
         if (node.isDirectory()) {
-            return CommandResult_1.CommandResult.success([], node);
+            return CommandResult_1.CommandResult.success([], { moveTo: node });
         }
         else {
             return CommandResult_1.CommandResult.notDirectory(node.name);
@@ -736,6 +758,7 @@ exports.Mkdir = Mkdir;
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
 const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Open extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -744,9 +767,23 @@ class Open extends Command_1.Command {
         return super.detectCommand('open', input);
     }
     execute() {
-        return CommandResult_1.CommandResult.success([
-            'opened the file!',
-        ]);
+        if (this.args.length < 2) {
+            return CommandResult_1.CommandResult.commandError(this, `No file given`);
+        }
+        const { error, node } = FileSystem_1.FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory);
+        if (error) {
+            return CommandResult_1.CommandResult.commandError(this, error.message);
+        }
+        if (node.isWebPageFile()) {
+            return CommandResult_1.CommandResult.success([
+                'opened the file!',
+            ], {
+                navigateTo: '/todos'
+            });
+        }
+        else {
+            return CommandResult_1.CommandResult.commandError(this, `Not a web-page-file: ${node.name}`);
+        }
     }
 }
 exports.Open = Open;
@@ -1076,13 +1113,13 @@ exports.FileSystem = FileSystem;
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const date_1 = __webpack_require__(/*! ../utils/date */ "./client/utils/date.ts");
-const Directory_1 = __webpack_require__(/*! ./Directory */ "./client/models/Directory.ts");
 class FileSystemNode {
     constructor(params) {
         this.name = params.name;
         this.createdAt = date_1.getCurrentTime();
     }
-    isDirectory() { return this instanceof Directory_1.Directory; }
+    isDirectory() { return this.constructor.name === 'Directory'; }
+    isWebPageFile() { return this.constructor.name === 'WebPageFile'; }
     isRoot() { return _.isNil(this.parent); }
 }
 exports.FileSystemNode = FileSystemNode;
@@ -1112,6 +1149,28 @@ exports.TextFile = TextFile;
 
 /***/ }),
 
+/***/ "./client/models/Files/WebPageFile.ts":
+/*!********************************************!*\
+  !*** ./client/models/Files/WebPageFile.ts ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const File_1 = __webpack_require__(/*! ../File */ "./client/models/File.ts");
+class WebPageFile extends File_1.File {
+    constructor(params) {
+        super(params);
+        this.pagePath = params.pagePath;
+    }
+}
+exports.WebPageFile = WebPageFile;
+
+
+/***/ }),
+
 /***/ "./client/models/Files/index.ts":
 /*!**************************************!*\
   !*** ./client/models/Files/index.ts ***!
@@ -1124,6 +1183,8 @@ exports.TextFile = TextFile;
 Object.defineProperty(exports, "__esModule", { value: true });
 var TextFile_1 = __webpack_require__(/*! ./TextFile */ "./client/models/Files/TextFile.ts");
 exports.TextFile = TextFile_1.TextFile;
+var WebPageFile_1 = __webpack_require__(/*! ./WebPageFile */ "./client/models/Files/WebPageFile.ts");
+exports.WebPageFile = WebPageFile_1.WebPageFile;
 
 
 /***/ }),
@@ -1422,7 +1483,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 const colors_1 = __webpack_require__(/*! ../utils/colors */ "./client/utils/colors.ts");
-const HorizontalLoadingIndicator_1 = __webpack_require__(/*! ../components/presentationals/common/HorizontalLoadingIndicator */ "./client/components/presentationals/common/HorizontalLoadingIndicator.tsx");
+const HorizontalLoadingIndicator_1 = __webpack_require__(/*! ../components/sfcs/common/HorizontalLoadingIndicator */ "./client/components/sfcs/common/HorizontalLoadingIndicator.tsx");
 const LoadingContainer = styled_components_1.default.div `
   display: flex;
   justify-content: center;
@@ -1532,7 +1593,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const HiddenTextArea_1 = __webpack_require__(/*! ../components/HiddenTextArea */ "./client/components/HiddenTextArea.tsx");
-const Terminal_1 = __webpack_require__(/*! ../components/presentationals/Terminal */ "./client/components/presentationals/Terminal/index.ts");
+const Terminal_1 = __webpack_require__(/*! ../components/sfcs/Terminal */ "./client/components/sfcs/Terminal/index.ts");
 const Message_1 = __webpack_require__(/*! ../models/Message */ "./client/models/Message.ts");
 class TerminalPage extends React.Component {
     constructor(props) {
@@ -1594,14 +1655,9 @@ const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const R = __webpack_require__(/*! ramda */ "./node_modules/ramda/es/index.js");
 const uuid = __webpack_require__(/*! uuid/v4 */ "./node_modules/uuid/v4.js");
-const styled_components_1 = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+const WebPageDiv_1 = __webpack_require__(/*! ../components/sfcs/Web/WebPageDiv */ "./client/components/sfcs/Web/WebPageDiv.tsx");
 const TodoList_1 = __webpack_require__(/*! ./Todos/TodoList */ "./client/pages/Todos/TodoList.tsx");
-const TodoPageDiv = styled_components_1.default.div `
-  display: block;
-  width: 100%;
-  height: 100%;
-`;
 class TodoPage extends React.Component {
     constructor(props) {
         super(props);
@@ -1625,7 +1681,7 @@ class TodoPage extends React.Component {
     }
     render() {
         const { todos } = this.state;
-        return (React.createElement(TodoPageDiv, null,
+        return (React.createElement(WebPageDiv_1.WebPageDiv, null,
             React.createElement("h1", null, "Todo page here"),
             React.createElement(react_router_dom_1.Switch, null,
                 React.createElement(react_router_dom_1.Route, { path: '/', render: () => (React.createElement(TodoList_1.TodoList, { todos: todos, onToggleCompleted: this.handleToggleCompleted })) }))));
@@ -1654,7 +1710,7 @@ const TodoListDiv = styled_components_1.default.div `
   display: block;
 `;
 exports.TodoList = ({ todos, onToggleCompleted, }) => {
-    return (React.createElement(TodoListDiv, null, _.map(todos, todo => (React.createElement(TodoListItem_1.TodoListItem, { todo: todo, onToggleCompleted: onToggleCompleted })))));
+    return (React.createElement(TodoListDiv, null, _.map(todos, (todo, idx) => (React.createElement(TodoListItem_1.TodoListItem, { key: idx, todo: todo, onToggleCompleted: onToggleCompleted })))));
 };
 
 
@@ -1804,9 +1860,12 @@ function* submitPrompt() {
     for (var message of result.messages) {
         yield effects_1.put(terminalActions.addMessage(message));
     }
-    if (result.moveTo) {
-        yield effects_1.put(fileSystemActions.setCurrentDirectory(result.moveTo));
-        yield effects_1.put(terminalActions.updatePromptStatus({ userName, directoryName: result.moveTo.name }));
+    if (result.data.navigateTo) {
+        console.log('navigate: ', result.data.navigateTo);
+    }
+    if (result.data.moveTo) {
+        yield effects_1.put(fileSystemActions.setCurrentDirectory(result.data.moveTo));
+        yield effects_1.put(terminalActions.updatePromptStatus({ userName, directoryName: result.data.moveTo.name }));
     }
 }
 ;
@@ -1981,6 +2040,10 @@ const desktopDirectory = new Directory_1.Directory({
         new Files_1.TextFile({
             name: 'memo.txt',
             content: 'do some study',
+        }),
+        new Files_1.WebPageFile({
+            name: 'todos.web',
+            pagePath: '/todos',
         }),
         new Directory_1.Directory({
             name: 'work',

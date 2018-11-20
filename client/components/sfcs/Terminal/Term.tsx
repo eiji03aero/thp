@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { colors } from "../../../utils/colors";
 
 const TermDiv = styled.div`
+  flex: 1;
   width: 100%;
-  height: 100%;
   background-color: ${colors.deepGreen};
   color: white;
   overflow-y: scroll;

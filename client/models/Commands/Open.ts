@@ -1,5 +1,6 @@
 import { Command, CommandBasis } from "../Command";
 import { CommandResult } from "../CommandResult";
+import { FileSystem } from "../FileSystem";
 
 export class Open extends Command {
   constructor (params: CommandBasis) {
@@ -11,8 +12,25 @@ export class Open extends Command {
   }
 
   execute (): CommandResult {
-    return CommandResult.success([
-      'opened the file!',
-    ]);
+    if (this.args.length < 2) {
+      return CommandResult.commandError(this, `No file given`);
+    }
+
+    const { error, node } = FileSystem.resolveNodeFromPath(this.args[1], this.currentDirectory);
+
+    if (error) {
+      return CommandResult.commandError(this, error.message);
+    }
+
+    if (node.isWebPageFile()) {
+      return CommandResult.success([
+        'opened the file!',
+      ], {
+        navigateTo: '/todos'
+      });
+    } else {
+      return CommandResult.commandError(this, `Not a web-page-file: ${node.name}`);
+    }
+
   }
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from "lodash";
 
 import { HiddenTextArea } from "../components/HiddenTextArea";
-import { Term, PromptInput, TextLine } from "../components/presentationals/Terminal";
+import { Term, PromptInput, TextLine } from "../components/sfcs/Terminal";
 
 import { Message } from "../models/Message";
 import { TextBasis } from "../models/Text";

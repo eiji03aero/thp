@@ -10,6 +10,8 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { GlobalStyle } from './GlobalStyle';
 
 const AppDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 `;
@@ -18,9 +20,12 @@ export const App = () => (
   <AppDiv>
 
     <Switch>
-      <Route exact path='/' component={TerminalPageContainer} />
       <Route path='/todos' component={TodoPage} />
-      <Route component={NotFoundPage}/>
+    </Switch>
+
+    <Switch>
+      <Route path='/' component={TerminalPageContainer} />
+      <Route component={NotFoundPage} />
     </Switch>
 
     <BootAppPageContainer/>

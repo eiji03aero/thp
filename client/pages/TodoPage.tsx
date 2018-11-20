@@ -2,17 +2,11 @@ import * as React from "react";
 import * as _ from "lodash";
 import * as R from "ramda";
 import * as uuid from "uuid/v4";
-import styled from "styled-components";
 import { Switch, Route } from "react-router-dom";
 
+import { WebPageDiv } from "../components/sfcs/Web/WebPageDiv";
 import { TodoList } from "./Todos/TodoList";
 import { Todo } from "./Todos/Todo";
-
-const TodoPageDiv = styled.div`
-  display: block;
-  width: 100%;
-  height: 100%;
-`;
 
 interface Props {
   title: string;
@@ -50,7 +44,7 @@ export class TodoPage extends React.Component<Props, State> {
     const { todos } = this.state;
 
     return (
-      <TodoPageDiv>
+      <WebPageDiv>
         <h1>Todo page here</h1>
 
         <Switch>
@@ -59,7 +53,7 @@ export class TodoPage extends React.Component<Props, State> {
           )}/>
         </Switch>
 
-      </TodoPageDiv>
+      </WebPageDiv>
     );
   }
 }

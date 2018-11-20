@@ -1,5 +1,5 @@
 import { Directory } from "../models/Directory";
-import { TextFile } from "../models/Files";
+import { TextFile, WebPageFile } from "../models/Files";
 
 /* -------------------- var directory -------------------- */
 const varDirectory = new Directory({
@@ -99,6 +99,10 @@ const desktopDirectory = new Directory({
     new TextFile({
       name: 'memo.txt',
       content: 'do some study',
+    }),
+    new WebPageFile({
+      name: 'todos.web',
+      pagePath: '/todos',
     }),
     new Directory({
       name: 'work',

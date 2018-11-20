@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from "styled-components";
 import { colors } from "../utils/colors";
 
-import { HorizontalLoadingIndicator } from "../components/presentationals/common/HorizontalLoadingIndicator";
+import { HorizontalLoadingIndicator } from "../components/sfcs/common/HorizontalLoadingIndicator";
 
 const LoadingContainer = styled.div`
   display: flex;
