@@ -1,4 +1,5 @@
 import { put, select, takeEvery } from "redux-saga/effects";
+import { push } from "connected-react-router";
 
 import { SUBMIT_PROMPT } from "../modules/Terminal";
 import * as terminalActions from '../modules/Terminal';
@@ -38,6 +39,7 @@ function* submitPrompt () {
 
   if (result.data.navigateTo) {
     console.log('navigate: ', result.data.navigateTo);
+    yield put(push(result.data.navigateTo));
   }
 
   if (result.data.moveTo) {

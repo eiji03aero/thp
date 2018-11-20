@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { connectRouter } from "connected-react-router";
 
 import { terminalReducer, TerminalActions, TerminalStoreState } from './Terminal';
 import { systemReducer, SystemActions, SystemStoreState } from "./System";
@@ -17,7 +18,8 @@ export interface RootStoreState {
   user: UserStoreState;
 }
 
-export const rootReducer: (state: RootStoreState, action: RootActions) => RootStoreState = combineReducers({
+export const createRootReducer = (history: any) => combineReducers({
+  router: connectRouter(history),
   terminal: terminalReducer,
   system: systemReducer,
   fileSystem: fileSystemReducer,
