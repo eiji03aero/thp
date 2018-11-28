@@ -1894,7 +1894,9 @@ const redux_saga_1 = __webpack_require__(/*! redux-saga */ "./node_modules/redux
 const redux_logger_1 = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
 const modules_1 = __webpack_require__(/*! ../modules */ "./client/modules/index.ts");
 exports.sagaMiddleware = redux_saga_1.default();
-exports.history = history_1.createBrowserHistory();
+exports.history =  true
+    ? history_1.createBrowserHistory()
+    : undefined;
 exports.createStore = () => {
     return redux_1.createStore(modules_1.createRootReducer(exports.history), redux_1.applyMiddleware(connected_react_router_1.routerMiddleware(exports.history), exports.sagaMiddleware, redux_logger_1.default));
 };
