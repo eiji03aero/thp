@@ -1,5 +1,5 @@
 import { delay } from "redux-saga";
-import { put, select, take, call, race } from "redux-saga/effects";
+import { put, select, take, takeEvery, call, race } from "redux-saga/effects";
 
 import { Completer } from "../models/Completer";
 import { Suggester } from "../models/Suggester";
@@ -29,19 +29,20 @@ function* inputCompletion (currentMessage: string, currentDirectory: Directory) 
   }
 }
 
-export function* detectKeyIntoPrompt () {
-  while (true) {
-    const action = yield take(DETECT_KEY_INTO_PROMPT);
+export function* watchDetectKeyIntoPrompt () {
+  yield takeEvery(DETECT_KEY_INTO_PROMPT, detectKeyIntoPrompt);
+}
 
-    const {
-      terminal: { currentMessage },
-      fileSystem: { currentDirectory },
-    } = yield select();
-    const { key } = action.payload.event;
+type DetectKeyIntoPromptAction = ReturnType<typeof terminalActions.detectKeyIntoPrompt>;
+function* detectKeyIntoPrompt (action: DetectKeyIntoPromptAction) {
+  const {
+    terminal: { currentMessage },
+    fileSystem: { currentDirectory },
+  } = yield select();
+  const { key } = action.payload.event;
 
-    switch (key) {
-      case "Tab":
-        yield call(inputCompletion, currentMessage, currentDirectory);
-    }
+  switch (key) {
+    case "Tab":
+      yield call(inputCompletion, currentMessage, currentDirectory);
   }
 }

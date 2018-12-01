@@ -1027,7 +1027,7 @@ class Completer {
             : [];
         const last = _.last(splitMessage);
         const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(last, currentDirectory, { omitLast: true });
-        if (error || !node)
+        if (error || !node || data.lastFragment === '..')
             return this.notCompleted();
         const nameRegExp = this.getNameRegExp(data.lastFragment);
         for (let child of node.children) {
@@ -1125,7 +1125,13 @@ class FileSystem {
         let targetNode = currentDirectory;
         let fragments = this.parsePathString(path);
         if (option.omitLast) {
-            data.lastFragment = fragments.pop();
+            // Ensure fragments will get to stay when just one fragment there
+            if (fragments.length === 1) {
+                data.lastFragment = fragments[0];
+            }
+            else {
+                data.lastFragment = fragments.pop();
+            }
         }
         _.each(fragments, (fragment) => {
             if (_.isNil(targetNode)) {
@@ -1976,18 +1982,18 @@ function* inputCompletion(currentMessage, currentDirectory) {
         }
     }
 }
-function* detectKeyIntoPrompt() {
-    while (true) {
-        const action = yield effects_1.take(Terminal_1.DETECT_KEY_INTO_PROMPT);
-        const { terminal: { currentMessage }, fileSystem: { currentDirectory }, } = yield effects_1.select();
-        const { key } = action.payload.event;
-        switch (key) {
-            case "Tab":
-                yield effects_1.call(inputCompletion, currentMessage, currentDirectory);
-        }
+function* watchDetectKeyIntoPrompt() {
+    yield effects_1.takeEvery(Terminal_1.DETECT_KEY_INTO_PROMPT, detectKeyIntoPrompt);
+}
+exports.watchDetectKeyIntoPrompt = watchDetectKeyIntoPrompt;
+function* detectKeyIntoPrompt(action) {
+    const { terminal: { currentMessage }, fileSystem: { currentDirectory }, } = yield effects_1.select();
+    const { key } = action.payload.event;
+    switch (key) {
+        case "Tab":
+            yield effects_1.call(inputCompletion, currentMessage, currentDirectory);
     }
 }
-exports.detectKeyIntoPrompt = detectKeyIntoPrompt;
 
 
 /***/ }),
@@ -2011,7 +2017,7 @@ function* rootSaga() {
     yield effects_1.all([
         bootApp_1.watchBootApp(),
         submitPrompt_1.watchSubmitPrompt(),
-        detectKeyIntoPrompt_1.detectKeyIntoPrompt(),
+        detectKeyIntoPrompt_1.watchDetectKeyIntoPrompt(),
         postCurrentMessage_1.watchPostCurrentMessage(),
     ]);
 }
@@ -2067,7 +2073,6 @@ function* postCurrentMessage() {
 Object.defineProperty(exports, "__esModule", { value: true });
 const effects_1 = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
 const connected_react_router_1 = __webpack_require__(/*! connected-react-router */ "./node_modules/connected-react-router/lib/index.js");
-const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const Terminal_1 = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const fileSystemActions = __webpack_require__(/*! ../modules/FileSystem */ "./client/modules/FileSystem.ts");
@@ -2077,9 +2082,8 @@ function* watchSubmitPrompt() {
 }
 exports.watchSubmitPrompt = watchSubmitPrompt;
 function* submitPrompt() {
-    const { terminal: { currentMessage: bareCurrentMessage }, user: { name: userName }, fileSystem: { currentDirectory }, } = yield effects_1.select();
-    const currentMessage = _.trim(bareCurrentMessage);
     yield effects_1.put(terminalActions.postCurrentMessage());
+    const { terminal: { currentMessage }, user: { name: userName }, fileSystem: { currentDirectory }, } = yield effects_1.select();
     const result = Commands_1.executeCommand({
         input: currentMessage,
         currentDirectory: currentDirectory

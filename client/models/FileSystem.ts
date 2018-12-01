@@ -16,7 +16,12 @@ export class FileSystem {
     let fragments = this.parsePathString(path);
 
     if (option.omitLast) {
-      data.lastFragment = fragments.pop();
+      // Ensure fragments will get to stay when just one fragment there
+      if (fragments.length === 1) {
+        data.lastFragment = fragments[0];
+      } else {
+        data.lastFragment = fragments.pop();
+      }
     }
 
     _.each(fragments, (fragment: string) => {

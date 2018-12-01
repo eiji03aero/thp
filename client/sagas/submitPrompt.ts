@@ -12,16 +12,13 @@ export function* watchSubmitPrompt () {
 }
 
 function* submitPrompt () {
+  yield put(terminalActions.postCurrentMessage());
+
   const {
-    terminal: { currentMessage: bareCurrentMessage },
+    terminal: { currentMessage },
     user: { name: userName },
     fileSystem: { currentDirectory },
   } = yield select();
-
-  const currentMessage = _.trim(bareCurrentMessage);
-
-  yield put(terminalActions.postCurrentMessage());
-
 
   const result = executeCommand({
     input: currentMessage,

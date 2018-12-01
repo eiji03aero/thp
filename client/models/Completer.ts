@@ -54,7 +54,7 @@ export class Completer {
 
     const { error, node, data } = FileSystem.resolveNodeFromPath(last, currentDirectory, { omitLast: true });
 
-    if (error || !node) return this.notCompleted();
+    if (error || !node || data.lastFragment === '..') return this.notCompleted();
 
     const nameRegExp = this.getNameRegExp(data.lastFragment);
 
