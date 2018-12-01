@@ -7,9 +7,11 @@ import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router-dom";
+import { ServerStyleSheet } from "styled-components";
 
 import { App } from "../client/App";
 import { createStore } from "../client/store";
+import { renderTemplate } from "./render";
 
 const app = express();
 const port = 3000;
@@ -22,25 +24,20 @@ app.use(express.static('public'));
 
 app.get('*', (req, res) => {
   const store = createStore();
-  const markup = renderToString(
+  const sheet = new ServerStyleSheet();
+  const markup = renderToString(sheet.collectStyles(
     <StaticRouter location={req.url} context={{}}>
       <Provider store={store}>
         <App/>
       </Provider>
     </StaticRouter>
-  );
+  ));
+  const styles = sheet.getStyleTags();
 
-  res.send(`
-    <html>
-      <head>
-        <title>THP</title>
-        <script src="/build/bundle.js" defer></script>
-      </head>
-      <body>
-        <div id="app-root">${ markup }</div>
-      </body>
-    </html>
-  `);
+  res.send(renderTemplate({
+    markup: markup,
+    styles: styles,
+  }));
 });
 
 const server = createServer(app);
