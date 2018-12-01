@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
@@ -13,9 +14,10 @@ const mapStateToProps = ({ terminal, fileSystem, user }: RootStoreState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onTypeIntoPrompt: (text: string) => dispatch(actions.typeIntoPrompt(text)),
+  onUpdateCurrentMessage: (text: string) => dispatch(actions.updateCurrentMessage(text)),
   onUpdatePromptCursorPosition: (position: number) => dispatch(actions.updatePromptCursorPosition(position)),
   onSubmitPrompt: () => dispatch(actions.submitPrompt()),
+  onDetectKeyIntoPrompt: (e: React.KeyboardEvent) => dispatch(actions.detectKeyIntoPrompt(e)),
 });
 
 export const TerminalPageContainer = connect(

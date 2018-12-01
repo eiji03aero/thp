@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
+import * as _ from "lodash";
 
 const StyledHiddenTextArea = styled.textarea`
   position: absolute;
@@ -34,6 +35,12 @@ export class HiddenTextArea extends React.Component<Props, {}> {
     this.textarea.current.focus();
   }
 
+  handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+    }
+  }
+
   handleKeyUp = (e: React.KeyboardEvent) => {
     const { selectionStart } = this.textarea.current;
     this.props.onKeyUp(e, { position: selectionStart });
@@ -47,6 +54,7 @@ export class HiddenTextArea extends React.Component<Props, {}> {
         ref={this.textarea}
         value={this.props.value}
         onChange={onChange}
+        onKeyDown={this.handleKeyDown}
         onKeyPress={onKeyPress}
         onKeyUp={this.handleKeyUp}
       />

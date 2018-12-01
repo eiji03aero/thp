@@ -183,6 +183,11 @@ const StyledHiddenTextArea = styled_components_1.default.textarea `
 class HiddenTextArea extends React.Component {
     constructor(props) {
         super(props);
+        this.handleKeyDown = (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+            }
+        };
         this.handleKeyUp = (e) => {
             const { selectionStart } = this.textarea.current;
             this.props.onKeyUp(e, { position: selectionStart });
@@ -194,7 +199,7 @@ class HiddenTextArea extends React.Component {
     }
     render() {
         const { onChange, onKeyPress } = this.props;
-        return (React.createElement(StyledHiddenTextArea, { ref: this.textarea, value: this.props.value, onChange: onChange, onKeyPress: onKeyPress, onKeyUp: this.handleKeyUp }));
+        return (React.createElement(StyledHiddenTextArea, { ref: this.textarea, value: this.props.value, onChange: onChange, onKeyDown: this.handleKeyDown, onKeyPress: onKeyPress, onKeyUp: this.handleKeyUp }));
     }
 }
 HiddenTextArea.defaultProps = {
@@ -468,9 +473,10 @@ const mapStateToProps = ({ terminal, fileSystem, user }) => ({
     messages: terminal.messages,
 });
 const mapDispatchToProps = (dispatch) => ({
-    onTypeIntoPrompt: (text) => dispatch(actions.typeIntoPrompt(text)),
+    onUpdateCurrentMessage: (text) => dispatch(actions.updateCurrentMessage(text)),
     onUpdatePromptCursorPosition: (position) => dispatch(actions.updatePromptCursorPosition(position)),
     onSubmitPrompt: () => dispatch(actions.submitPrompt()),
+    onDetectKeyIntoPrompt: (e) => dispatch(actions.detectKeyIntoPrompt(e)),
 });
 exports.TerminalPageContainer = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(TerminalPage_1.TerminalPage);
 
@@ -666,9 +672,9 @@ exports.Cd = Cd;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const Command_1 = __webpack_require__(/*! ../Command */ "./client/models/Command.ts");
 const CommandResult_1 = __webpack_require__(/*! ../CommandResult */ "./client/models/CommandResult.ts");
+const FileSystem_1 = __webpack_require__(/*! ../FileSystem */ "./client/models/FileSystem.ts");
 class Ls extends Command_1.Command {
     constructor(params) {
         super(params);
@@ -677,13 +683,7 @@ class Ls extends Command_1.Command {
         return super.detectCommand('ls', input);
     }
     execute() {
-        const { children } = this.currentDirectory;
-        const maxNameLength = Math.max(...children.map(child => child.name.length));
-        const paddedNameLength = maxNameLength + 1;
-        const childNameList = children.map(child => ({
-            color: child.isDirectory() ? 'blue' : 'white',
-            text: _.padEnd(child.name, paddedNameLength),
-        }));
+        const childNameList = FileSystem_1.FileSystem.getChildNameList(this.currentDirectory);
         return new CommandResult_1.CommandResult({
             status: 'success',
             messages: [
@@ -976,6 +976,78 @@ exports.executeCommand = (params) => {
 
 /***/ }),
 
+/***/ "./client/models/Completer.ts":
+/*!************************************!*\
+  !*** ./client/models/Completer.ts ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const FileSystem_1 = __webpack_require__(/*! ./FileSystem */ "./client/models/FileSystem.ts");
+class Completer {
+    static completed(text) {
+        return { completed: true, completedText: text };
+    }
+    static notCompleted() {
+        return { completed: false };
+    }
+    static execute(message, currentDirectory) {
+        if (message === '')
+            return this.notCompleted();
+        const commandNameResult = this.commandNameCompleter(message);
+        if (commandNameResult.completed) {
+            return commandNameResult;
+        }
+        const fileNodeNameResult = this.fileNodeNameCompleter(message, currentDirectory);
+        if (fileNodeNameResult.completed) {
+            return fileNodeNameResult;
+        }
+        return this.notCompleted();
+    }
+    static commandNameCompleter(message) {
+        const commandNameList = [
+            'cd', 'ls', 'mkdir', 'open',
+            'pwd', 'rm', 'touch',
+        ];
+        const nameRegexp = this.getNameRegExp(message);
+        for (let name of commandNameList) {
+            if (nameRegexp.test(name)) {
+                return this.completed(name);
+            }
+        }
+        return this.notCompleted();
+    }
+    static fileNodeNameCompleter(message, currentDirectory) {
+        const splitMessage = message.split(' ');
+        const initial = splitMessage.length > 1
+            ? _.initial(splitMessage)
+            : [];
+        const last = _.last(splitMessage);
+        const { error, node, data } = FileSystem_1.FileSystem.resolveNodeFromPath(last, currentDirectory, { omitLast: true });
+        if (error || !node)
+            return this.notCompleted();
+        const nameRegExp = this.getNameRegExp(data.lastFragment);
+        for (let child of node.children) {
+            if (nameRegExp.test(child.name)) {
+                const modifiedPathName = last.substring(0, last.length - data.lastFragment.length) + child.name;
+                const completedMessage = [...initial, modifiedPathName].join(' ');
+                return this.completed(completedMessage);
+            }
+        }
+        return this.notCompleted();
+    }
+    static getNameRegExp(name) {
+        return new RegExp('^' + name);
+    }
+}
+exports.Completer = Completer;
+
+
+/***/ }),
+
 /***/ "./client/models/Directory.ts":
 /*!************************************!*\
   !*** ./client/models/Directory.ts ***!
@@ -1090,6 +1162,16 @@ class FileSystem {
         }
         const nodeNames = _.map(nodes, (node) => node.name);
         return targetNode.name + nodeNames.join('/');
+    }
+    static getChildNameList(directory) {
+        const { children } = directory;
+        const maxNameLength = Math.max(...children.map(child => child.name.length));
+        const paddedNameLength = maxNameLength + 1;
+        const childNameList = children.map(child => ({
+            color: child.isDirectory() ? 'blue' : 'white',
+            text: _.padEnd(child.name, paddedNameLength),
+        }));
+        return childNameList;
     }
     /* -------------------- Private methods -------------------- */
     static parsePathString(pathString) {
@@ -1217,6 +1299,51 @@ class Message {
     }
 }
 exports.Message = Message;
+
+
+/***/ }),
+
+/***/ "./client/models/Suggester.ts":
+/*!************************************!*\
+  !*** ./client/models/Suggester.ts ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const FileSystem_1 = __webpack_require__(/*! ./FileSystem */ "./client/models/FileSystem.ts");
+class Suggester {
+    static suggested(texts) {
+        return { suggested: true, suggestions: texts };
+    }
+    static notSuggested() {
+        return { suggested: false };
+    }
+    static execute(message, currentDirectory) {
+        if (message === '')
+            return this.notSuggested();
+        const fileNodeNameResult = this.fileNodeNameSuggester(message, currentDirectory);
+        if (fileNodeNameResult.suggested) {
+            return fileNodeNameResult;
+        }
+        return this.notSuggested();
+    }
+    static fileNodeNameSuggester(message, currentDirectory) {
+        const splitMessage = message.split(' ');
+        const last = _.last(splitMessage);
+        const { error, node } = FileSystem_1.FileSystem.resolveNodeFromPath(last, currentDirectory);
+        if (error || !node)
+            return this.notSuggested();
+        if (node.isDirectory()) {
+            const suggestions = FileSystem_1.FileSystem.getChildNameList(node);
+            return this.suggested(suggestions);
+        }
+        return this.notSuggested();
+    }
+}
+exports.Suggester = Suggester;
 
 
 /***/ }),
@@ -1350,12 +1477,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Message_1 = __webpack_require__(/*! ../models/Message */ "./client/models/Message.ts");
 /* -------------------- Constants -------------------- */
 exports.UPDATE_PROMPT_STATUS = 'UPDATE_PROMPT_STATUS';
-exports.TYPE_INTO_PROMPT = 'TYPE_INTO_PROMPT';
+exports.UPDATE_CURRENT_MESSAGE = 'UPDATE_CURRENT_MESSAGE';
 exports.UPDATE_PROMPT_CURSOR_POSITION = 'UPDATE_PROMPT_CURSOR_POSITION';
 exports.ADD_MESSAGE = 'ADD_MESSAGE';
+exports.POST_CURRENT_MESSAGE = 'POST_CURRENT_MESSAGE';
 exports.CLEAR_CURRENT_MESSAGE = 'CLEAR_CURRENT_MESSAGE';
 exports.SUBMIT_PROMPT = 'SUBMIT_PROMPT';
-exports.updatePromptStatus = ({ userName, directoryName }) => ({
+exports.DETECT_KEY_INTO_PROMPT = 'DETECT_KEY_INTO_PROMPT';
+exports.updatePromptStatus = ({ userName, directoryName, }) => ({
     type: exports.UPDATE_PROMPT_STATUS,
     payload: {
         prompt: [
@@ -1366,8 +1495,8 @@ exports.updatePromptStatus = ({ userName, directoryName }) => ({
         ],
     },
 });
-exports.typeIntoPrompt = (currentMessage) => ({
-    type: exports.TYPE_INTO_PROMPT,
+exports.updateCurrentMessage = (currentMessage) => ({
+    type: exports.UPDATE_CURRENT_MESSAGE,
     payload: {
         currentMessage,
     }
@@ -1387,11 +1516,20 @@ exports.addMessage = ({ type, texts }) => ({
         }),
     },
 });
+exports.postCurrentMessage = () => ({
+    type: exports.POST_CURRENT_MESSAGE,
+});
 exports.clearCurrentMessage = () => ({
     type: exports.CLEAR_CURRENT_MESSAGE,
 });
 exports.submitPrompt = () => ({
     type: exports.SUBMIT_PROMPT,
+});
+exports.detectKeyIntoPrompt = (e) => ({
+    type: exports.DETECT_KEY_INTO_PROMPT,
+    payload: {
+        event: e,
+    }
 });
 const initialState = {
     prompt: [],
@@ -1404,7 +1542,7 @@ exports.terminalReducer = (state = initialState, action) => {
     switch (action.type) {
         case exports.UPDATE_PROMPT_STATUS:
             return Object.assign({}, state, { prompt: action.payload.prompt });
-        case exports.TYPE_INTO_PROMPT:
+        case exports.UPDATE_CURRENT_MESSAGE:
             return Object.assign({}, state, { currentMessage: action.payload.currentMessage });
         case exports.UPDATE_PROMPT_CURSOR_POSITION:
             return Object.assign({}, state, { cursorPosition: action.payload.cursorPosition });
@@ -1602,16 +1740,20 @@ class TerminalPage extends React.Component {
         super(props);
         this.handleKeyPress = (e) => {
             if (e.key === 'Enter') {
-                e.preventDefault();
                 this.props.onSubmitPrompt();
             }
         };
         this.handleKeyUp = (e, { position }) => {
+            e.preventDefault();
             this.props.onUpdatePromptCursorPosition(position);
+            this.props.onDetectKeyIntoPrompt(e);
         };
         this.handleChangeTextArea = (e) => {
             const { value } = e.target;
-            this.props.onTypeIntoPrompt(value);
+            const ensuredValue = _.trim(value) === ""
+                ? ""
+                : value;
+            this.props.onUpdateCurrentMessage(ensuredValue);
         };
         this.handleClickTerm = (e) => {
             this.textarea.current.focus();
@@ -1767,7 +1909,6 @@ const systemActions = __webpack_require__(/*! ../modules/System */ "./client/mod
 const fileSystemActions = __webpack_require__(/*! ../modules/FileSystem */ "./client/modules/FileSystem.ts");
 const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const initialFileNodes_1 = __webpack_require__(/*! ../utils/initialFileNodes */ "./client/utils/initialFileNodes.ts");
-const FileSystem_1 = __webpack_require__(/*! ../models/FileSystem */ "./client/models/FileSystem.ts");
 function* watchBootApp() {
     yield effects_1.takeEvery(System_1.BOOT_APP, bootApp);
 }
@@ -1780,8 +1921,6 @@ function* bootApp() {
     yield effects_1.put(terminalActions.updatePromptStatus({
         userName: userName, directoryName: initialFileNodes_1.homeDirectory.name
     }));
-    const applicationsDir = initialFileNodes_1.homeDirectory.find('applications');
-    console.log(FileSystem_1.FileSystem.getAbsoluteNodePath(applicationsDir));
     yield redux_saga_1.delay(4000);
     yield effects_1.put(systemActions.completeBootApp());
     yield effects_1.put(terminalActions.addMessage({
@@ -1802,6 +1941,57 @@ function* bootApp() {
 
 /***/ }),
 
+/***/ "./client/sagas/detectKeyIntoPrompt.ts":
+/*!*********************************************!*\
+  !*** ./client/sagas/detectKeyIntoPrompt.ts ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const redux_saga_1 = __webpack_require__(/*! redux-saga */ "./node_modules/redux-saga/es/index.js");
+const effects_1 = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
+const Completer_1 = __webpack_require__(/*! ../models/Completer */ "./client/models/Completer.ts");
+const Suggester_1 = __webpack_require__(/*! ../models/Suggester */ "./client/models/Suggester.ts");
+const Terminal_1 = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
+const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
+function* inputCompletion(currentMessage, currentDirectory) {
+    const completerResult = Completer_1.Completer.execute(currentMessage, currentDirectory);
+    if (completerResult.completed) {
+        yield effects_1.put(terminalActions.updateCurrentMessage(completerResult.completedText));
+        yield effects_1.put(terminalActions.updatePromptCursorPosition(completerResult.completedText.length));
+    }
+    const { action } = yield effects_1.race({
+        action: effects_1.take(Terminal_1.DETECT_KEY_INTO_PROMPT),
+        timout: effects_1.call(redux_saga_1.delay, 1000),
+    });
+    if (action) {
+        const suggesterResult = Suggester_1.Suggester.execute(currentMessage, currentDirectory);
+        if (suggesterResult.suggested) {
+            yield effects_1.put(terminalActions.postCurrentMessage());
+            yield effects_1.put(terminalActions.addMessage({ type: 'system', texts: suggesterResult.suggestions }));
+            yield effects_1.put(terminalActions.updateCurrentMessage(currentMessage));
+        }
+    }
+}
+function* detectKeyIntoPrompt() {
+    while (true) {
+        const action = yield effects_1.take(Terminal_1.DETECT_KEY_INTO_PROMPT);
+        const { terminal: { currentMessage }, fileSystem: { currentDirectory }, } = yield effects_1.select();
+        const { key } = action.payload.event;
+        switch (key) {
+            case "Tab":
+                yield effects_1.call(inputCompletion, currentMessage, currentDirectory);
+        }
+    }
+}
+exports.detectKeyIntoPrompt = detectKeyIntoPrompt;
+
+
+/***/ }),
+
 /***/ "./client/sagas/index.ts":
 /*!*******************************!*\
   !*** ./client/sagas/index.ts ***!
@@ -1815,13 +2005,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const effects_1 = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
 const bootApp_1 = __webpack_require__(/*! ./bootApp */ "./client/sagas/bootApp.ts");
 const submitPrompt_1 = __webpack_require__(/*! ./submitPrompt */ "./client/sagas/submitPrompt.ts");
+const detectKeyIntoPrompt_1 = __webpack_require__(/*! ./detectKeyIntoPrompt */ "./client/sagas/detectKeyIntoPrompt.ts");
+const postCurrentMessage_1 = __webpack_require__(/*! ./postCurrentMessage */ "./client/sagas/postCurrentMessage.ts");
 function* rootSaga() {
     yield effects_1.all([
         bootApp_1.watchBootApp(),
         submitPrompt_1.watchSubmitPrompt(),
+        detectKeyIntoPrompt_1.detectKeyIntoPrompt(),
+        postCurrentMessage_1.watchPostCurrentMessage(),
     ]);
 }
 exports.rootSaga = rootSaga;
+
+
+/***/ }),
+
+/***/ "./client/sagas/postCurrentMessage.ts":
+/*!********************************************!*\
+  !*** ./client/sagas/postCurrentMessage.ts ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const effects_1 = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
+const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+const Terminal_1 = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
+const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
+function* watchPostCurrentMessage() {
+    yield effects_1.takeEvery(Terminal_1.POST_CURRENT_MESSAGE, postCurrentMessage);
+}
+exports.watchPostCurrentMessage = watchPostCurrentMessage;
+function* postCurrentMessage() {
+    const { terminal: { prompt, currentMessage: bareCurrentMessage }, } = yield effects_1.select();
+    const currentMessage = _.trim(bareCurrentMessage);
+    yield effects_1.put(terminalActions.addMessage({
+        type: 'user',
+        texts: [
+            ...prompt,
+            { text: currentMessage },
+        ],
+    }));
+    yield effects_1.put(terminalActions.clearCurrentMessage());
+}
+;
 
 
 /***/ }),
@@ -1838,6 +2067,7 @@ exports.rootSaga = rootSaga;
 Object.defineProperty(exports, "__esModule", { value: true });
 const effects_1 = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
 const connected_react_router_1 = __webpack_require__(/*! connected-react-router */ "./node_modules/connected-react-router/lib/index.js");
+const _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 const Terminal_1 = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const terminalActions = __webpack_require__(/*! ../modules/Terminal */ "./client/modules/Terminal.ts");
 const fileSystemActions = __webpack_require__(/*! ../modules/FileSystem */ "./client/modules/FileSystem.ts");
@@ -1847,15 +2077,9 @@ function* watchSubmitPrompt() {
 }
 exports.watchSubmitPrompt = watchSubmitPrompt;
 function* submitPrompt() {
-    const { terminal: { prompt, currentMessage }, user: { name: userName }, fileSystem: { currentDirectory }, } = yield effects_1.select();
-    yield effects_1.put(terminalActions.addMessage({
-        type: 'user',
-        texts: [
-            ...prompt,
-            { text: currentMessage },
-        ],
-    }));
-    yield effects_1.put(terminalActions.clearCurrentMessage());
+    const { terminal: { currentMessage: bareCurrentMessage }, user: { name: userName }, fileSystem: { currentDirectory }, } = yield effects_1.select();
+    const currentMessage = _.trim(bareCurrentMessage);
+    yield effects_1.put(terminalActions.postCurrentMessage());
     const result = Commands_1.executeCommand({
         input: currentMessage,
         currentDirectory: currentDirectory
@@ -1864,7 +2088,6 @@ function* submitPrompt() {
         yield effects_1.put(terminalActions.addMessage(message));
     }
     if (result.data.navigateTo) {
-        console.log('navigate: ', result.data.navigateTo);
         yield effects_1.put(connected_react_router_1.push(result.data.navigateTo));
     }
     if (result.data.moveTo) {

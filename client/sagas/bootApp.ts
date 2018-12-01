@@ -7,7 +7,6 @@ import * as fileSystemActions from "../modules/FileSystem";
 import * as terminalActions from '../modules/Terminal';
 
 import { initialFileNodes, homeDirectory } from "../utils/initialFileNodes";
-import { FileSystem } from "../models/FileSystem";
 
 export function* watchBootApp () {
   yield takeEvery(BOOT_APP, bootApp);
@@ -24,9 +23,6 @@ function* bootApp () {
   yield put(terminalActions.updatePromptStatus({
     userName: userName, directoryName: homeDirectory.name
   }));
-
-  const applicationsDir = homeDirectory.find('applications');
-  console.log(FileSystem.getAbsoluteNodePath(applicationsDir));
 
   yield delay(4000);
 

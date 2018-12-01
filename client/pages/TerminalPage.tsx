@@ -13,9 +13,10 @@ interface Props {
   cursorPosition: number;
   messages: Message[];
 
-  onTypeIntoPrompt(message: string): void;
+  onUpdateCurrentMessage(message: string): void;
   onUpdatePromptCursorPosition(position: number): void;
   onSubmitPrompt(): void;
+  onDetectKeyIntoPrompt(e: React.KeyboardEvent): void;
 }
 
 interface State {
@@ -44,18 +45,22 @@ export class TerminalPage extends React.Component<Props, State> {
 
   handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
       this.props.onSubmitPrompt();
     }
   }
 
   handleKeyUp = (e: React.KeyboardEvent, { position }: { position: number }) => {
+    e.preventDefault();
     this.props.onUpdatePromptCursorPosition(position);
+    this.props.onDetectKeyIntoPrompt(e);
   }
 
   handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const { value } = e.target;
-    this.props.onTypeIntoPrompt(value);
+    const ensuredValue = _.trim(value) === ""
+      ? ""
+      : value;
+    this.props.onUpdateCurrentMessage(ensuredValue);
   }
 
   handleClickTerm = (e: React.MouseEvent<HTMLElement>) => {

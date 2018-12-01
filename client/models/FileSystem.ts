@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 
 import { Directory } from "./Directory";
+import { TextBasis } from "./Text";
 import { FileSystemNode } from "./FileSystemNode";
 
 interface resolveNodeResult { error: any; node: any; data: any; }
@@ -56,6 +57,17 @@ export class FileSystem {
 
     const nodeNames = _.map(nodes, (node: FileSystemNode) => node.name);
     return targetNode.name + nodeNames.join('/');
+  }
+
+  static getChildNameList (directory: Directory): TextBasis[] {
+    const { children } = directory;
+    const maxNameLength = Math.max(...children.map(child => child.name.length));
+    const paddedNameLength = maxNameLength + 1;
+    const childNameList = children.map(child => ({
+      color: child.isDirectory() ? 'blue' : 'white',
+      text: _.padEnd(child.name, paddedNameLength),
+    }));
+    return childNameList;
   }
 
   /* -------------------- Private methods -------------------- */
